@@ -1,27 +1,22 @@
 .message-input-container {
     padding: 8px 12px calc(8px + var(--safe-bottom));
-    display: flex;
-    align-items: flex-end;
-    gap: 4px;
-    border-top: 1px solid var(--border);
-    background: var(--bg-secondary);
 }
 
 .input-wrapper {
-    flex: 1;
-    background: var(--bg-tertiary);
-    border-radius: 20px;
-    border: 1px solid var(--border);
-    padding: 2px 12px;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
+    gap: 2px;
+    background: var(--bg-tertiary);
+    border-radius: 24px;
+    border: 1px solid var(--border);
+    padding: 4px 4px 4px 6px;
     transition: all 0.15s ease;
 }
 
 .input-wrapper:focus-within {
     border-color: var(--accent);
     background: var(--bg-primary);
-    box-shadow: 0 0 0 1px var(--accent-dim);
+    box-shadow: 0 0 0 2px var(--accent-dim);
 }
 
 .message-input {
@@ -33,23 +28,48 @@
     font-size: 14px;
     font-family: inherit;
     resize: none;
-    padding: 8px 0;
+    padding: 6px 4px;
     max-height: 100px;
     line-height: 1.4;
+    align-self: center;
 }
 
 .message-input::placeholder {
     color: var(--text-muted);
 }
 
+.attach-btn {
+    color: var(--text-muted);
+    flex-shrink: 0;
+}
+
+.attach-btn:hover {
+    color: var(--text-secondary);
+}
+
+.emoji-btn {
+    color: var(--text-muted);
+    flex-shrink: 0;
+}
+
+.emoji-btn:hover {
+    color: var(--text-secondary);
+}
+
+.send-voice-group {
+    flex-shrink: 0;
+    position: relative;
+    width: 34px;
+    height: 34px;
+}
+
 .send-btn {
     background: var(--accent);
     color: white;
-    width: 40px;
-    height: 40px;
+    width: 34px;
+    height: 34px;
     border-radius: 50%;
-    flex-shrink: 0;
-    box-shadow: 0 2px 8px var(--accent-glow);
+    box-shadow: none;
     transition: all 0.15s ease;
 }
 
@@ -58,19 +78,21 @@
 }
 
 .send-btn:active {
-    background: var(--accent);
     transform: scale(0.92);
+}
+
+.send-btn svg {
+    width: 18px;
+    height: 18px;
 }
 
 .voice-btn {
     display: none;
     background: var(--accent);
     color: white;
-    width: 40px;
-    height: 40px;
+    width: 34px;
+    height: 34px;
     border-radius: 50%;
-    flex-shrink: 0;
-    box-shadow: 0 2px 8px var(--accent-glow);
     transition: all 0.15s ease;
 }
 
@@ -82,13 +104,13 @@
     transform: scale(0.92);
 }
 
-.message-input-container.voice-mode .voice-btn {
-    display: flex;
+.voice-btn svg {
+    width: 18px;
+    height: 18px;
 }
 
-.message-input-container.voice-mode .voice-btn svg {
-    width: 20px;
-    height: 20px;
+.message-input-container.voice-mode .voice-btn {
+    display: flex;
 }
 
 .message-input-container:not(.voice-mode) .voice-btn { display: none; }
