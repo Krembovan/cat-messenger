@@ -100,9 +100,9 @@ body {
 .danger-btn svg { color: var(--danger); }
 .danger-btn:hover svg { color: #ff6b6b; }
 .select-count { font-weight: 600; font-size: 15px; }
-.select-mode-header { display: none; align-items: center; gap: 8px; }
-.select-mode-active .select-mode-header { display: flex; }
-.select-mode-active .normal-mode-header { display: none; }
+.select-mode-header { display: none !important; align-items: center; gap: 8px; }
+.select-mode-active .select-mode-header { display: flex !important; }
+.select-mode-active .normal-mode-header { display: none !important; }
 .normal-mode-header { display: flex; }
 .chat-item.muted { opacity: 0.6; }
 .edited-mark { font-size: 11px; color: var(--text-muted); }

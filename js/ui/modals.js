@@ -98,6 +98,15 @@ export const Modals = {
         searchInput.addEventListener('input', Helpers.debounce((e) => {
             this.renderForwardChats(list, e.target.value);
         }, 300));
+        
+        State.subscribe((event) => {
+            if (event === 'chatChanged') {
+                overlay.classList.remove('active');
+                State.clearSelection();
+            }
+        });
+        
+        this.renderForwardChats(list, '');
     },
     
     initSelectMode() {

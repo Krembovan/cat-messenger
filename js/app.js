@@ -9,7 +9,6 @@ import { ContextMenu } from './ui/context-menu.js';
 import { Swipe } from './ui/swipe.js';
 import { Profile } from './ui/profile.js';
 import { Modals } from './ui/modals.js';
-import { Voice } from './ui/voice.js';
 
 const App = {
     init() {
@@ -26,7 +25,6 @@ const App = {
         Swipe.init();
         Profile.init();
         Modals.init();
-        Voice.init();
         
         this.bindGlobalEvents();
         

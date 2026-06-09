@@ -25,7 +25,7 @@ export const Messages = {
             const sel = e.target.closest('.message-selector');
             if (sel) {
                 const msgEl = sel.closest('.message');
-                const msgId = parseFloat(msgEl.dataset.id);
+                const msgId = msgEl.dataset.id;
                 State.toggleMessageSelection(msgId);
                 return;
             }
@@ -33,7 +33,7 @@ export const Messages = {
             const react = e.target.closest('.message-reaction');
             if (react) {
                 const msgEl = react.closest('.message');
-                const msgId = parseFloat(msgEl.dataset.id);
+                const msgId = msgEl.dataset.id;
                 const emoji = react.dataset.emoji;
                 API.toggleReaction(State.currentChat, msgId, emoji);
                 return;
@@ -44,13 +44,21 @@ export const Messages = {
                 this.toggleVoicePlayback(playBtn);
                 return;
             }
+            
+            const img = e.target.closest('.message-image');
+            if (img) {
+                document.getElementById('imagePreview').src = img.src;
+                document.getElementById('imageOverlay').classList.add('active');
+                return;
+            }
         });
         
         this.elements.container.addEventListener('contextmenu', (e) => {
             const msgEl = e.target.closest('.message');
             if (!msgEl) return;
             e.preventDefault();
-            this.showMessageMenu(e.clientX, e.clientY, msgEl);
+            this.elements.reactionPicker.classList.remove('active');
+            this.showReactionPicker(e.clientX, e.clientY, msgEl);
         });
         
         let longPressTimer;
@@ -59,7 +67,7 @@ export const Messages = {
             if (!msgEl || State.selectMode) return;
             
             longPressTimer = setTimeout(() => {
-                this.showMessageMenu(
+                this.showReactionPicker(
                     e.touches[0].clientX,
                     e.touches[0].clientY,
                     msgEl
@@ -67,11 +75,14 @@ export const Messages = {
             }, 500);
         });
         
-        this.elements.container.addEventListener('touchend', () => clearTimeout(longPressTimer));
+        this.elements.container.addEventListener('touchend', () => {
+            clearTimeout(longPressTimer);
+        });
         
         document.addEventListener('click', (e) => {
             if (!this.elements.reactionPicker.contains(e.target)) {
                 this.elements.reactionPicker.classList.remove('active');
+                this.elements.reactionPicker._msgId = null;
             }
         });
     },
@@ -121,7 +132,7 @@ export const Messages = {
             bubbleHtml = this.renderVoiceBubble(msg);
         } else if (isImage && msg.file?.url) {
             bubbleHtml = `<div class="message-bubble">
-                <img src="${msg.file.url}" alt="Photo" class="message-image" onclick="document.getElementById('imagePreview').src='${msg.file.url}';document.getElementById('imageOverlay').classList.add('active')">
+                <img src="${msg.file.url}" alt="Photo" class="message-image">
                 ${msg.text ? `<p>${Helpers.escapeHtml(msg.text)}</p>` : ''}
             </div>`;
         } else if (isFile && msg.file) {
@@ -220,37 +231,18 @@ export const Messages = {
         return icons[status] || '';
     },
     
-    showMessageMenu(x, y, msgEl) {
-        const msgId = parseFloat(msgEl.dataset.id);
+    showReactionPicker(x, y, msgEl) {
+        const msgId = msgEl.dataset.id;
         const chat = State.getCurrentChat();
         const msg = chat?.messages.find(m => m.id === msgId);
         if (!msg) return;
         
-        if (State.selectMode) {
-            State.toggleMessageSelection(msgId);
-            return;
-        }
-        
+        this.elements.reactionPicker._msgId = msgId;
         this.elements.reactionPicker.style.left = Math.min(x - 80, window.innerWidth - 200) + 'px';
         this.elements.reactionPicker.style.top = (y - 60) + 'px';
         this.elements.reactionPicker.classList.add('active');
-        this.elements.reactionPicker._msgId = msgId;
         
-        this.showContextMenu(x, y + 40, msgId, msg);
-    },
-    
-    showContextMenu(x, y, msgId, msg) {
-        const menu = document.getElementById('contextMenu');
-        
-        const editItem = menu.querySelector('[data-action="edit"]');
-        const reactItem = menu.querySelector('[data-action="react"]');
-        
-        editItem.style.display = msg.incoming ? 'none' : 'flex';
-        
-        menu.style.left = Math.min(x, window.innerWidth - 180) + 'px';
-        menu.style.top = Math.min(y, window.innerHeight - 280) + 'px';
-        menu.classList.add('active');
-        menu.dataset.msgId = msgId;
+        ContextMenu.show(x, y + 40, msgId);
     },
     
     toggleSelectMode(active) {
@@ -269,7 +261,7 @@ export const Messages = {
     updateSelectionUI(selectedIds) {
         document.getElementById('selectCount').textContent = selectedIds.length + ' выбрано';
         document.querySelectorAll('.message').forEach(el => {
-            const mid = parseFloat(el.dataset.id);
+            const mid = el.dataset.id;
             const sel = el.querySelector('.message-selector');
             sel.classList.toggle('checked', selectedIds.includes(mid));
         });

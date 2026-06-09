@@ -54,7 +54,16 @@ export const API = {
     load() {
         const saved = localStorage.getItem(STORAGE_KEY);
         State.chats = saved ? JSON.parse(saved) : JSON.parse(JSON.stringify(DEFAULT_CHATS));
+        this._normalizeIds();
         if (!saved) this.save();
+    },
+    
+    _normalizeIds() {
+        Object.values(State.chats).forEach(chat => {
+            chat.messages.forEach(msg => {
+                if (typeof msg.id === 'number') msg.id = String(msg.id);
+            });
+        });
     },
     
     save() {
@@ -77,7 +86,7 @@ export const API = {
         const chat = State.chats[chatId];
         if (!chat) return null;
         const newMsg = {
-            id: Date.now() + Math.random(),
+            id: Date.now().toString(36) + Math.random().toString(36).substr(2, 6),
             text: message.text || '',
             time: this.getCurrentTime(),
             incoming: message.incoming || false,
@@ -136,7 +145,7 @@ export const API = {
             const msg = fromChat.messages.find(m => m.id === mid);
             if (msg) {
                 toChat.messages.push({
-                    id: Date.now() + Math.random(),
+                    id: Date.now().toString(36) + Math.random().toString(36).substr(2, 6),
                     text: msg.text,
                     time: this.getCurrentTime(),
                     incoming: false,

@@ -89,16 +89,14 @@ export const ContextMenu = {
     },
     
     doForward() {
-        const selected = new Set([this.currentMsgId]);
-        State.selectedMessages = selected;
+        State.selectedMessages = new Set([this.currentMsgId]);
         State.selectMode = false;
         
         const overlay = document.getElementById('forwardOverlay');
-        overlay.classList.add('active');
-        
         const list = document.getElementById('forwardChats');
-        const forwardChats = Object.values(State.chats).filter(c => c.id !== State.currentChat);
-        list.innerHTML = forwardChats.map(chat => `
+        
+        const otherChats = Object.values(State.chats).filter(c => c.id !== State.currentChat);
+        list.innerHTML = otherChats.map(chat => `
             <div class="contact-item" data-chat="${chat.id}">
                 <img src="${chat.avatar}" alt="${chat.name}" class="contact-avatar">
                 <span class="contact-name">${chat.name}</span>
@@ -111,6 +109,8 @@ export const ContextMenu = {
                 overlay.classList.remove('active');
             });
         });
+        
+        overlay.classList.add('active');
     },
     
     showNotification(text) {

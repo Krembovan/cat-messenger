@@ -25,6 +25,10 @@ export const State = {
     
     setCurrentChat(chatId) {
         this.currentChat = chatId;
+        this.replyToMessageId = null;
+        this.editMessageId = null;
+        this.selectedMessages.clear();
+        this.selectMode = false;
         this.notify('chatChanged', chatId);
     },
     

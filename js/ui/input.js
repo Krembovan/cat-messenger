@@ -5,12 +5,13 @@ import { Chat } from './chat.js';
 export const Input = {
     elements: {},
     typingTimeout: null,
-    onEmpty: false,
+    onEmpty: null,
     
     init() {
         this.cacheElements();
         this.bindEvents();
         this.bindStateEvents();
+        this.toggleMode();
     },
     
     cacheElements() {
@@ -232,6 +233,8 @@ export const Input = {
         this.elements.input.value = '';
         this.elements.input.style.height = 'auto';
         this.elements.container.classList.add('voice-mode');
+        this.elements.editPreview.classList.remove('active');
+        this.elements.replyPreview.classList.remove('active');
         this.onEmpty = false;
     },
     
