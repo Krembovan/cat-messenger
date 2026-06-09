@@ -147,12 +147,13 @@ export const Input = {
     amplitudes: [],
     
     startVoiceRecord() {
+        this._recording = true;
         this.elements.voiceRecorder.classList.add('active', 'recording');
         this.amplitudes = [];
-        
         this.waveBars = Array.from(this.elements.voiceWave.children);
         
         navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+            if (!this._recording) return;
             this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             this.analyser = this.audioCtx.createAnalyser();
             this.analyser.fftSize = 64;
@@ -160,6 +161,7 @@ export const Input = {
             source.connect(this.analyser);
             this._drawWave();
         }).catch(() => {
+            if (!this._recording) return;
             this.waveBars.forEach((b, i) => {
                 const h = 4 + Math.sin(i * 0.5 + Date.now() * 0.01) * 12;
                 b.style.height = h + 'px';
@@ -178,7 +180,7 @@ export const Input = {
     },
     
     _drawWave() {
-        if (!this.analyser) return;
+        if (!this.analyser || !this._recording) return;
         const data = new Uint8Array(this.analyser.frequencyBinCount);
         this.analyser.getByteFrequencyData(data);
         let max = 0;
@@ -207,7 +209,7 @@ export const Input = {
     },
     
     stopVoiceRecord() {
-        if (!State.isRecording) return;
+        this._recording = false;
         State.stopRecording();
         this._cleanupAudio();
         this.elements.voiceTimer.textContent = '0:00';
@@ -215,8 +217,8 @@ export const Input = {
     },
     
     cancelVoiceRecord() {
+        this._recording = false;
         this._cleanupAudio();
-        this.elements.voiceRecorder.classList.remove('active', 'recording');
         this.elements.voiceTimer.textContent = '0:00';
         clearInterval(State.recordingInterval);
         State.isRecording = false;
