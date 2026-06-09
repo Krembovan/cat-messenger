@@ -39,15 +39,5 @@
         animation: menuScaleIn 0.15s ease;
     }
 
-    .message-input-container.voice-mode .voice-btn {
-        background: var(--accent);
-        color: white;
-    }
-
-    .message-input-container:not(.voice-mode) .voice-btn {
-        background: transparent;
-        color: var(--text-secondary);
-    }
-
     .message-image { max-width: 300px; }
 }
