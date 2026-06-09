@@ -61,7 +61,8 @@ export const API = {
     _normalizeIds() {
         Object.values(State.chats).forEach(chat => {
             chat.messages.forEach(msg => {
-                if (typeof msg.id === 'number') msg.id = String(msg.id);
+                if (typeof msg.id !== 'string') msg.id = String(msg.id);
+                if (msg.replyTo && typeof msg.replyTo !== 'string') msg.replyTo = String(msg.replyTo);
             });
         });
     },

@@ -64,8 +64,6 @@
 
 .voice-btn { display: none; }
 
-.message-input-container.voice-mode .send-btn { display: none; }
-.message-input-container.voice-mode .input-wrapper { display: none; }
 .message-input-container.voice-mode .voice-btn {
     display: flex;
     background: var(--accent);
@@ -79,4 +77,16 @@
 .message-input-container.voice-mode .voice-btn svg {
     width: 22px;
     height: 22px;
+}
+
+.message-input-container:not(.voice-mode) .voice-btn {
+    display: none;
+}
+
+.message-input-container:not(.voice-mode) .send-btn {
+    display: flex;
+}
+
+.message-input-container.voice-mode .send-btn {
+    display: none;
 }

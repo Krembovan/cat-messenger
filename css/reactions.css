@@ -1,6 +1,6 @@
 .reaction-picker {
     display: none;
-    position: absolute;
+    position: fixed;
     background: var(--bg-tertiary);
     border-radius: 24px;
     padding: 4px 8px;

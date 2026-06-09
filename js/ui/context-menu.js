@@ -63,6 +63,7 @@ export const ContextMenu = {
         
         switch(action) {
             case 'react':
+                document.getElementById('reactionPicker')._msgId = this.currentMsgId;
                 document.getElementById('reactionPicker').classList.add('active');
                 break;
             case 'reply':
