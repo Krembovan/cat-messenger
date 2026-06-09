@@ -33,24 +33,28 @@ export const ContextMenu = {
         });
     },
     
-    show(x, y, msgId) {
+    show(msgEl) {
+        const msgId = String(msgEl.dataset.id);
         this.currentMsgId = msgId;
         
         const editItem = this.elements.menu.querySelector('[data-action="edit"]');
         const chat = State.getCurrentChat();
-        const msg = chat?.messages.find(m => String(m.id) === String(msgId));
+        const msg = chat?.messages.find(m => String(m.id) === msgId);
         
         if (editItem) {
             editItem.style.display = (msg && !msg.incoming) ? 'flex' : 'none';
         }
         
         this.elements.menu.classList.add('active');
-        this.elements.menu.dataset.msgId = String(msgId);
+        this.elements.menu.dataset.msgId = msgId;
         
+        const rect = msgEl.getBoundingClientRect();
         const mw = this.elements.menu.offsetWidth || 180;
         const mh = this.elements.menu.offsetHeight || 200;
-        const left = x + mw > window.innerWidth - 8 ? window.innerWidth - mw - 8 : x;
-        const top = y + mh > window.innerHeight - 8 ? window.innerHeight - mh - 8 : y;
+        const x = msg.incoming ? rect.left : rect.right - mw;
+        const y = rect.bottom + 4;
+        const left = Math.max(8, Math.min(x, window.innerWidth - mw - 8));
+        const top = y + mh > window.innerHeight - 8 ? rect.top - mh - 4 : y;
         
         this.elements.menu.style.left = left + 'px';
         this.elements.menu.style.top = top + 'px';

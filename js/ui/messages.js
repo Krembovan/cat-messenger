@@ -278,15 +278,15 @@ export const Messages = {
         this.elements.reactionPicker._msgId = msgId;
         this.elements.reactionPicker.classList.add('active');
         
-        const pw = this.elements.reactionPicker.offsetWidth || 200;
-        const left = x - pw / 2;
-        const clampedLeft = Math.max(8, Math.min(left, window.innerWidth - pw - 8));
-        const top = Math.max(8, y - 60);
+        const rect = msgEl.getBoundingClientRect();
+        const pw = 220;
+        const left = Math.max(8, Math.min(rect.left + rect.width / 2 - pw / 2, window.innerWidth - pw - 8));
+        const top = Math.max(8, rect.top - 54);
         
-        this.elements.reactionPicker.style.left = clampedLeft + 'px';
+        this.elements.reactionPicker.style.left = left + 'px';
         this.elements.reactionPicker.style.top = top + 'px';
         
-        ContextMenu.show(x, y + 40, msgId);
+        ContextMenu.show(msgEl);
     },
     
     toggleSelectMode(active) {

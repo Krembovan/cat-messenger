@@ -3,8 +3,8 @@
     position: fixed;
     background: var(--bg-surface);
     border-radius: var(--radius-md);
-    padding: 6px;
-    min-width: 180px;
+    padding: 4px;
+    min-width: 160px;
     box-shadow: var(--shadow-lg);
     z-index: 151;
     border: 1px solid var(--border);
@@ -23,12 +23,12 @@
 .context-item {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 10px 12px;
+    gap: 8px;
+    padding: 8px 10px;
     border-radius: var(--radius-sm);
     cursor: pointer;
     transition: background 0.1s ease;
-    font-size: 13px;
+    font-size: 12px;
     color: var(--text-primary);
 }
 
@@ -37,9 +37,10 @@
 }
 
 .context-item svg {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
     color: var(--text-secondary);
+    flex-shrink: 0;
 }
 
 .context-item.danger {
