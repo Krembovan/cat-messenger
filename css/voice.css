@@ -68,6 +68,16 @@
     gap: 8px;
     padding: 10px 14px;
     min-width: 160px;
+    position: relative;
+    padding-bottom: 20px;
+}
+
+.voice-bubble .message-meta {
+    position: absolute;
+    bottom: 4px;
+    right: 10px;
+    margin: 0;
+    float: none;
 }
 
 .voice-play-btn {
