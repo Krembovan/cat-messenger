@@ -145,12 +145,18 @@ export const Messages = {
         const editedHtml = msg.edited ? ' <span class="edited-mark">изм.</span>' : '';
         const forwardedHtml = msg.forwarded ? ' <span class="forwarded-mark">↗ Переслано</span>' : '';
         
+        const metaHtml = `<div class="message-meta">
+            <span class="message-time">${msg.time}</span>
+            ${statusHtml}
+        </div>`;
+        
         let bubbleHtml = '';
         if (isVoice) {
-            bubbleHtml = this.renderVoiceBubble(msg);
+            bubbleHtml = this.renderVoiceBubble(msg, metaHtml);
         } else if (isImage && msg.file?.url) {
             bubbleHtml = `<div class="message-bubble">
                 <img src="${msg.file.url}" alt="Photo" class="message-image">
+                ${metaHtml}
                 ${msg.text ? `<p>${Helpers.escapeHtml(msg.text)}</p>` : ''}
             </div>`;
         } else if (isFile && msg.file) {
@@ -159,11 +165,12 @@ export const Messages = {
                     <span class="message-file-icon">📎</span>
                     <div><strong>${Helpers.escapeHtml(msg.file.name)}</strong><br><small>${msg.file.size ? (msg.file.size < 1024 ? msg.file.size + ' B' : (msg.file.size / 1024).toFixed(1) + ' KB') : ''}</small></div>
                 </div>
-                ${msg.text ? `<p>${Helpers.escapeHtml(msg.text)}</p>` : ''}
+                ${metaHtml}
             </div>`;
         } else {
             bubbleHtml = `<div class="message-bubble">
                 <p>${Helpers.escapeHtml(msg.text)}${editedHtml}${forwardedHtml}</p>
+                ${metaHtml}
             </div>`;
         }
         
@@ -179,16 +186,12 @@ export const Messages = {
                     ${replyHtml}
                     ${bubbleHtml}
                     ${reactionsHtml}
-                    <div class="message-meta">
-                        <span class="message-time">${msg.time}</span>
-                        ${statusHtml}
-                    </div>
                 </div>
             </div>
         `;
     },
     
-    renderVoiceBubble(msg) {
+    renderVoiceBubble(msg, metaHtml) {
         const amps = msg.voiceAmplitudes;
         const count = 20;
         const bars = [];
@@ -216,6 +219,7 @@ export const Messages = {
                 </button>
                 <div class="voice-bars">${bars.join('')}</div>
                 <span class="voice-duration">${duration}</span>
+                ${metaHtml}
             </div>
         `;
     },
