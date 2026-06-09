@@ -61,3 +61,22 @@
     background: var(--accent-hover);
     transform: scale(0.92);
 }
+
+.voice-btn { display: none; }
+
+.message-input-container.voice-mode .send-btn { display: none; }
+.message-input-container.voice-mode .input-wrapper { display: none; }
+.message-input-container.voice-mode .voice-btn {
+    display: flex;
+    background: var(--accent);
+    color: white;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.message-input-container.voice-mode .voice-btn svg {
+    width: 22px;
+    height: 22px;
+}

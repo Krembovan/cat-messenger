@@ -6,7 +6,7 @@ const EMOJIS = [
     '👍', '👎', '❤️', '🔥', '✨', '🎉', '💯', '🙏',
     '💪', '🤝', '👋', '✌️', '🤙', '👀', '💬', '🗯️',
     '✅', '❌', '⭐', '🎊', '🎯', '📌', '📎', '✉️',
-    '🗑️', '📁', '📷', '🎵'
+    '🗑️', '📁', '📷', '🎵', '🎤', '🎬', '📹', '💻'
 ];
 
 export const Emoji = {
@@ -28,7 +28,7 @@ export const Emoji = {
     
     render() {
         const grid = this.elements.picker.querySelector('.emoji-grid');
-        grid.innerHTML = EMOJIS.map(emoji => 
+        grid.innerHTML = EMOJIS.map(emoji =>
             `<span class="emoji">${emoji}</span>`
         ).join('');
     },
@@ -47,7 +47,7 @@ export const Emoji = {
         });
         
         document.addEventListener('click', (e) => {
-            if (!this.elements.picker.contains(e.target) && 
+            if (!this.elements.picker.contains(e.target) &&
                 !this.elements.btn.contains(e.target)) {
                 State.closeEmojiPicker();
             }

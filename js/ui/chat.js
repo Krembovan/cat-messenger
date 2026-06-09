@@ -2,6 +2,7 @@ import { State } from '../state.js';
 import { API } from '../api.js';
 import { Messages } from './messages.js';
 import { Input } from './input.js';
+import { Profile } from './profile.js';
 
 export const Chat = {
     elements: {},
@@ -19,20 +20,25 @@ export const Chat = {
             chatAvatar: document.getElementById('chatAvatar'),
             chatName: document.getElementById('chatName'),
             chatStatus: document.getElementById('chatStatus'),
-            messageCount: document.getElementById('messageCount'),
-            typingAvatar: document.getElementById('typingAvatar')
+            typingAvatar: document.getElementById('typingAvatar'),
+            chatUserInfo: document.getElementById('chatUserInfo'),
+            chatSearchBtn: document.getElementById('chatSearchBtn')
         };
     },
     
     bindEvents() {
         this.elements.backBtn.addEventListener('click', () => this.goBack());
+        this.elements.chatUserInfo.addEventListener('click', () => {
+            if (State.currentChat) Profile.show(State.currentChat);
+        });
+        this.elements.chatSearchBtn.addEventListener('click', () => {
+            alert('Поиск в чате в разработке');
+        });
     },
     
     bindStateEvents() {
         State.subscribe((event, data) => {
-            if (event === 'chatChanged') {
-                this.openChat(data);
-            }
+            if (event === 'chatChanged') this.openChat(data);
         });
     },
     
@@ -43,11 +49,9 @@ export const Chat = {
         this.elements.chatName.textContent = chat.name;
         this.elements.chatAvatar.src = chat.avatar;
         this.elements.chatStatus.textContent = chat.status;
-        this.elements.chatStatus.style.color = chat.online 
-            ? 'var(--online)' 
-            : 'var(--text-muted)';
+        this.elements.chatStatus.style.color = chat.online
+            ? 'var(--online)' : 'var(--text-muted)';
         this.elements.typingAvatar.src = chat.avatar;
-        this.elements.messageCount.textContent = chat.messages.length;
         
         Messages.render();
         Input.clear();
@@ -55,13 +59,8 @@ export const Chat = {
         this.show();
     },
     
-    show() {
-        this.elements.chatMain.classList.add('active');
-    },
-    
-    hide() {
-        this.elements.chatMain.classList.remove('active');
-    },
+    show() { this.elements.chatMain.classList.add('active'); },
+    hide() { this.elements.chatMain.classList.remove('active'); },
     
     goBack() {
         this.hide();

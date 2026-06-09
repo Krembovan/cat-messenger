@@ -1,0 +1,114 @@
+.reaction-picker {
+    display: none;
+    position: absolute;
+    background: var(--bg-tertiary);
+    border-radius: 24px;
+    padding: 4px 8px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    z-index: 150;
+    animation: reactionIn 0.2s ease;
+    border: 1px solid var(--border);
+}
+
+.reaction-picker.active {
+    display: flex;
+    gap: 4px;
+}
+
+@keyframes reactionIn {
+    from { transform: scale(0.5); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.reaction-picker .react {
+    font-size: 28px;
+    padding: 8px;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: all 0.15s;
+    user-select: none;
+}
+
+.reaction-picker .react:hover {
+    transform: scale(1.3);
+    background: var(--bg-hover);
+}
+
+.message .message-reactions {
+    display: flex;
+    gap: 2px;
+    margin-top: 4px;
+    flex-wrap: wrap;
+}
+
+.message .message-reaction {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--accent);
+    border-radius: 12px;
+    padding: 4px 8px 4px 6px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.15s;
+    animation: reactPopIn 0.25s ease;
+}
+
+.message .message-reaction.has-you {
+    background: var(--accent);
+    border-color: var(--accent-hover);
+}
+
+.message .message-reaction .reaction-count {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.message .message-reaction.has-you .reaction-count {
+    color: var(--text-primary);
+}
+
+@keyframes reactPopIn {
+    from { transform: scale(0); opacity: 0; }
+    50% { transform: scale(1.3); }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.message-selector {
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--text-muted);
+    border-radius: 50%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: all 0.15s;
+    margin: auto 4px;
+}
+
+.select-mode-active .message-selector {
+    display: flex;
+}
+
+.message-selector.checked {
+    background: var(--accent);
+    border-color: var(--accent);
+}
+
+.message-selector.checked::after {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background: white;
+    border-radius: 50%;
+}
+
+.message.edited .message-bubble::after {
+    content: 'изм.';
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-left: 6px;
+}

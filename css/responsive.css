@@ -11,9 +11,7 @@
         transform: none !important;
     }
 
-    .back-btn {
-        display: none;
-    }
+    .back-btn { display: none; }
 
     .emoji-picker {
         width: 340px;
@@ -23,7 +21,60 @@
         bottom: 70px;
     }
 
-    .message {
-        max-width: 60%;
+    .message { max-width: 60%; }
+
+    .profile-overlay {
+        align-items: center;
     }
+
+    .profile-panel {
+        border-radius: 24px;
+        max-height: 80vh;
+        height: auto;
+        animation: scaleIn 0.25s ease;
+    }
+
+    @keyframes scaleIn {
+        from { transform: scale(0.95); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+    }
+
+    .overlay {
+        align-items: center;
+    }
+
+    .modal, .panel {
+        border-radius: 24px;
+        max-height: 70vh;
+        max-width: 420px;
+        animation: scaleIn 0.25s ease;
+    }
+
+    .voice-recorder {
+        border-radius: 12px;
+    }
+
+    .reaction-picker {
+        width: auto;
+    }
+
+    .voice-btn {
+        display: flex !important;
+    }
+
+    .message-input-container .send-btn {
+        display: flex !important;
+    }
+
+    .message-input-container.voice-mode .voice-btn {
+        background: var(--accent);
+        color: white;
+    }
+
+    .message-input-container:not(.voice-mode) .voice-btn {
+        background: transparent;
+        color: var(--text-secondary);
+    }
+
+    .message-image { max-width: 300px; }
 }

@@ -8,6 +8,7 @@ export const Sidebar = {
     init() {
         this.cacheElements();
         this.bindEvents();
+        this.bindStateEvents();
         this.render();
     },
     
@@ -20,15 +21,29 @@ export const Sidebar = {
     },
     
     bindEvents() {
-        this.elements.searchInput.addEventListener('input', 
+        this.elements.searchInput.addEventListener('input',
             Helpers.debounce((e) => this.handleSearch(e.target.value), 300)
         );
     },
     
+    bindStateEvents() {
+        State.subscribe((event) => {
+            if (event === 'chatChanged' || event === 'messageAdded' ||
+                event === 'messageDeleted' || event === 'messagesDeleted' ||
+                event === 'chatPinned' || event === 'chatMuted' ||
+                event === 'chatDeleted' || event === 'historyCleared' ||
+                event === 'messagesForwarded') {
+                this.render();
+            } else if (event === 'chatClosed') {
+                this.show();
+            }
+        });
+    },
+    
     render() {
         const chats = API.getSortedChats();
-        const matchedIds = this.currentSearch 
-            ? API.searchChats(this.currentSearch) 
+        const matchedIds = this.currentSearch
+            ? API.searchChats(this.currentSearch)
             : null;
         
         this.elements.chatsList.innerHTML = chats
@@ -41,14 +56,17 @@ export const Sidebar = {
     
     renderChatItem(chat) {
         const lastMsg = chat.messages[chat.messages.length - 1];
-        const preview = lastMsg 
-            ? (lastMsg.incoming ? '' : 'Вы: ') + lastMsg.text 
+        const preview = lastMsg
+            ? (lastMsg.type === 'voice' ? '🎤 Голосовое' :
+               lastMsg.type === 'image' ? '📷 Фото' :
+               lastMsg.type === 'file' ? `📎 ${lastMsg.file?.name || 'Файл'}` :
+               (lastMsg.incoming ? '' : 'Вы: ') + lastMsg.text)
             : 'Нет сообщений';
         const time = lastMsg ? lastMsg.time : '';
         const isActive = State.currentChat === chat.id;
         
         return `
-            <div class="chat-item ${isActive ? 'active' : ''}" data-chat="${chat.id}">
+            <div class="chat-item ${isActive ? 'active' : ''}${chat.muted ? ' muted' : ''}" data-chat="${chat.id}">
                 <div class="chat-avatar">
                     <img src="${chat.avatar}" alt="${chat.name}">
                     <span class="status ${chat.online ? 'online' : 'offline'}"></span>
@@ -58,7 +76,7 @@ export const Sidebar = {
                         <span class="chat-name">${chat.name}</span>
                         <span class="chat-time">${time}</span>
                     </div>
-                    <p class="chat-preview">${Helpers.escapeHtml(preview)}</p>
+                    <p class="chat-preview">${chat.muted ? '🔇 ' : ''}${Helpers.escapeHtml(preview)}</p>
                 </div>
                 ${chat.pinned ? '<span class="pin-icon">📌</span>' : ''}
             </div>
@@ -68,8 +86,7 @@ export const Sidebar = {
     bindChatEvents() {
         this.elements.chatsList.querySelectorAll('.chat-item').forEach(item => {
             item.addEventListener('click', () => {
-                const chatId = item.dataset.chat;
-                State.setCurrentChat(chatId);
+                State.setCurrentChat(item.dataset.chat);
             });
         });
     },
@@ -79,11 +96,6 @@ export const Sidebar = {
         this.render();
     },
     
-    show() {
-        this.elements.sidebar.classList.remove('hidden');
-    },
-    
-    hide() {
-        this.elements.sidebar.classList.add('hidden');
-    }
+    show() { this.elements.sidebar.classList.remove('hidden'); },
+    hide() { this.elements.sidebar.classList.add('hidden'); }
 };

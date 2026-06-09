@@ -6,7 +6,6 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>CAT Messenger</title>
-    
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/sidebar.css">
     <link rel="stylesheet" href="css/chat.css">
@@ -15,13 +14,15 @@
     <link rel="stylesheet" href="css/emoji.css">
     <link rel="stylesheet" href="css/context-menu.css">
     <link rel="stylesheet" href="css/typing.css">
+    <link rel="stylesheet" href="css/reactions.css">
+    <link rel="stylesheet" href="css/voice.css">
+    <link rel="stylesheet" href="css/profile.css">
+    <link rel="stylesheet" href="css/modals.css">
     <link rel="stylesheet" href="css/responsive.css">
-    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="app">
-        <!-- Sidebar -->
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <div class="logo">
@@ -30,34 +31,56 @@
                     </svg>
                     <span class="logo-text">CAT</span>
                 </div>
-                <button class="icon-btn" title="Настройки">
+                <button class="icon-btn" id="newChatBtn" title="Новый чат">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="12" cy="12" r="3"/>
-                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                        <circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/>
+                        <line x1="22" y1="11" x2="16" y2="11"/>
                     </svg>
                 </button>
             </div>
-
             <div class="search-box">
                 <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="11" cy="11" r="8"/>
-                    <path d="M21 21l-4.35-4.35"/>
+                    <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
                 </svg>
                 <input type="text" placeholder="Поиск чатов..." class="search-input" id="searchInput">
             </div>
-
             <nav class="chats-list" id="chatsList"></nav>
         </aside>
 
-        <!-- Main Chat Area -->
         <main class="chat-main" id="chatMain">
-            <header class="chat-header-main">
+            <!-- SELECT MODE HEADER -->
+            <header class="chat-header-main select-mode" id="selectHeader">
+                <button class="icon-btn back-btn" id="selectCancelBtn" title="Отмена">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 6L6 18M6 6l12 12"/>
+                    </svg>
+                </button>
+                <span class="select-count" id="selectCount">0 выбрано</span>
+                <div class="chat-actions">
+                    <button class="icon-btn" id="selectFwdBtn" title="Переслать">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="15 14 20 9 15 4"/>
+                            <path d="M4 20v-7a4 4 0 0 1 4-4h12"/>
+                        </svg>
+                    </button>
+                    <button class="icon-btn danger-btn" id="selectDelBtn" title="Удалить">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="3 6 5 6 21 6"/>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                        </svg>
+                    </button>
+                </div>
+            </header>
+
+            <!-- NORMAL HEADER -->
+            <header class="chat-header-main normal-mode" id="normalHeader">
                 <button class="icon-btn back-btn" id="backBtn" title="Назад">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M19 12H5M12 19l-7-7 7-7"/>
                     </svg>
                 </button>
-                <div class="chat-user-info">
+                <div class="chat-user-info" id="chatUserInfo">
                     <img src="" alt="Avatar" class="chat-avatar-main" id="chatAvatar">
                     <div class="chat-user-details">
                         <h2 class="chat-user-name" id="chatName"></h2>
@@ -65,24 +88,19 @@
                     </div>
                 </div>
                 <div class="chat-actions">
-                    <span class="message-count" id="messageCount"></span>
-                    <button class="icon-btn" title="Поиск в чате">
+                    <button class="icon-btn" id="chatSearchBtn" title="Поиск в чате">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="11" cy="11" r="8"/>
-                            <path d="M21 21l-4.35-4.35"/>
+                            <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
                         </svg>
                     </button>
-                    <button class="icon-btn" title="Ещё">
+                    <button class="icon-btn" id="chatMoreBtn" title="Ещё">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="12" cy="12" r="1"/>
-                            <circle cx="19" cy="12" r="1"/>
-                            <circle cx="5" cy="12" r="1"/>
+                            <circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/>
                         </svg>
                     </button>
                 </div>
             </header>
 
-            <!-- Reply Preview -->
             <div class="reply-preview" id="replyPreview">
                 <div class="reply-content">
                     <span class="reply-label">Ответ на</span>
@@ -95,21 +113,49 @@
                 </button>
             </div>
 
+            <!-- EDIT PREVIEW -->
+            <div class="reply-preview" id="editPreview">
+                <div class="reply-content">
+                    <span class="reply-label edit-label">Редактировать</span>
+                    <p class="reply-text" id="editPreviewText"></p>
+                </div>
+                <button class="reply-cancel" id="editCancel">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 6L6 18M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+
             <div class="messages-container" id="messagesContainer"></div>
 
-            <!-- Typing Indicator -->
             <div class="typing-indicator" id="typingIndicator">
                 <img src="" alt="Avatar" class="typing-avatar" id="typingAvatar">
-                <div class="typing-dots">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
+                <div class="typing-dots"><span></span><span></span><span></span></div>
                 <span class="typing-text">печатает...</span>
             </div>
 
-            <div class="message-input-container">
-                <button class="icon-btn attach-btn" title="Прикрепить файл">
+            <!-- VOICE RECORDING UI -->
+            <div class="voice-recorder" id="voiceRecorder">
+                <button class="voice-cancel-btn" id="voiceCancelBtn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 6L6 18M6 6l12 12"/>
+                    </svg>
+                </button>
+                <div class="voice-wave" id="voiceWave">
+                    <span></span><span></span><span></span><span></span><span></span>
+                    <span></span><span></span><span></span><span></span><span></span>
+                </div>
+                <span class="voice-timer" id="voiceTimer">0:00</span>
+                <button class="voice-send-btn" id="voiceSendBtn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="22" y1="2" x2="11" y2="13"/>
+                        <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="message-input-container" id="messageInputContainer">
+                <button class="icon-btn attach-btn" id="attachBtn" title="Прикрепить файл">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/>
                     </svg>
@@ -118,66 +164,160 @@
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <circle cx="12" cy="12" r="10"/>
                         <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
-                        <line x1="9" y1="9" x2="9.01" y2="9"/>
-                        <line x1="15" y1="9" x2="15.01" y2="9"/>
+                        <line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>
                     </svg>
                 </button>
                 <div class="input-wrapper">
                     <textarea class="message-input" id="messageInput" placeholder="Введите сообщение..." rows="1"></textarea>
                 </div>
-                <button class="icon-btn send-btn" id="sendBtn" title="Отправить">
+                <button class="icon-btn voice-btn" id="voiceBtn" title="Голосовое">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="22" y1="2" x2="11" y2="13"/>
-                        <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                        <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                        <line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/>
                     </svg>
                 </button>
             </div>
 
-            <!-- Emoji Picker -->
-            <div class="emoji-picker" id="emojiPicker">
-                <div class="emoji-grid"></div>
-            </div>
+            <div class="emoji-picker" id="emojiPicker"><div class="emoji-grid"></div></div>
         </main>
 
-        <!-- Context Menu -->
+        <!-- REACTION PICKER -->
+        <div class="reaction-picker" id="reactionPicker">
+            <span class="react" data-emoji="👍">👍</span>
+            <span class="react" data-emoji="❤️">❤️</span>
+            <span class="react" data-emoji="😂">😂</span>
+            <span class="react" data-emoji="😮">😮</span>
+            <span class="react" data-emoji="😢">😢</span>
+            <span class="react" data-emoji="🔥">🔥</span>
+        </div>
+
+        <!-- CONTEXT MENU -->
         <div class="context-menu" id="contextMenu">
-            <div class="context-item" data-action="reply">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="9 14 4 9 9 4"/>
-                    <path d="M20 20v-7a4 4 0 0 0-4-4H4"/>
-                </svg>
-                <span>Ответить</span>
-            </div>
-            <div class="context-item" data-action="copy">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
-                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
-                </svg>
-                <span>Копировать</span>
-            </div>
-            <div class="context-item" data-action="forward">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="15 14 20 9 15 4"/>
-                    <path d="M4 20v-7a4 4 0 0 1 4-4h12"/>
-                </svg>
-                <span>Переслать</span>
-            </div>
-            <div class="context-item" data-action="pin">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M12 2L12 22M17 7L7 17"/>
-                </svg>
-                <span>Закрепить</span>
-            </div>
-            <div class="context-item danger" data-action="delete">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="3 6 5 6 21 6"/>
-                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-                </svg>
-                <span>Удалить</span>
+            <div class="context-item" data-action="react"><span>❤️</span><span>Добавить реакцию</span></div>
+            <div class="context-item" data-action="reply"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/></svg><span>Ответить</span></div>
+            <div class="context-item" data-action="copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Копировать</span></div>
+            <div class="context-item" data-action="edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg><span>Изменить</span></div>
+            <div class="context-item" data-action="forward"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 14 20 9 15 4"/><path d="M4 20v-7a4 4 0 0 1 4-4h12"/></svg><span>Переслать</span></div>
+            <div class="context-item" data-action="select"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><polyline points="9 12 11 14 15 10"/></svg><span>Выбрать</span></div>
+            <div class="context-item danger" data-action="delete"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg><span>Удалить</span></div>
+        </div>
+
+        <!-- PROFILE PANEL -->
+        <div class="profile-overlay" id="profileOverlay">
+            <div class="profile-panel" id="profilePanel">
+                <div class="profile-header">
+                    <button class="icon-btn" id="profileBackBtn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 6L6 18M6 6l12 12"/>
+                        </svg>
+                    </button>
+                    <h3>Профиль</h3>
+                </div>
+                <div class="profile-body">
+                    <img src="" alt="Avatar" class="profile-avatar" id="profileAvatar">
+                    <h2 class="profile-name" id="profileName"></h2>
+                    <span class="profile-status" id="profileStatus"></span>
+                    <div class="profile-actions">
+                        <button class="profile-action" id="profileCallBtn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                            </svg>
+                            <span>Звонок</span>
+                        </button>
+                        <button class="profile-action" id="profileVideoBtn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polygon points="23 7 16 12 23 17 23 7"/>
+                                <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+                            </svg>
+                            <span>Видео</span>
+                        </button>
+                        <button class="profile-action" id="profileSearchBtn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+                            </svg>
+                            <span>Поиск</span>
+                        </button>
+                    </div>
+                    <div class="profile-menu">
+                        <button class="profile-menu-item" id="profileMediaBtn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                            <span>Медиа</span>
+                        </button>
+                        <button class="profile-menu-item" id="profileFilesBtn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
+                            <span>Файлы</span>
+                        </button>
+                        <button class="profile-menu-item" id="profileMuteBtn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23 9" y1="5" x2="17" y2="11"/><line x1="17 5" y1="5" x2="23" y2="11"/></svg>
+                            <span>Без звука</span>
+                        </button>
+                        <button class="profile-menu-item danger" id="profileClearBtn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            <span>Очистить историю</span>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
 
+        <!-- CHAT SETTINGS PANEL -->
+        <div class="overlay" id="chatSettingsOverlay">
+            <div class="panel" id="chatSettingsPanel">
+                <div class="panel-header">
+                    <h3>Настройки чата</h3>
+                    <button class="icon-btn" id="settingsCloseBtn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 6L6 18M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="panel-menu">
+                    <button class="panel-item" id="settingsPinBtn"><span>📌 Закрепить чат</span></button>
+                    <button class="panel-item" id="settingsMuteBtn"><span>🔇 Без звука</span></button>
+                    <button class="panel-item" id="settingsClearBtn"><span>🗑️ Очистить историю</span></button>
+                    <button class="panel-item danger" id="settingsDeleteBtn"><span>🚫 Удалить чат</span></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- NEW CHAT MODAL -->
+        <div class="overlay" id="newChatOverlay">
+            <div class="modal" id="newChatModal">
+                <div class="panel-header"><h3>Новый чат</h3>
+                    <button class="icon-btn" id="newChatCloseBtn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                    </button>
+                </div>
+                <div class="search-box"><input type="text" placeholder="Имя пользователя..." class="search-input" id="newChatInput"></div>
+                <div class="contacts-list" id="newChatContacts"></div>
+            </div>
+        </div>
+
+        <!-- FORWARD MODAL -->
+        <div class="overlay" id="forwardOverlay">
+            <div class="modal" id="forwardModal">
+                <div class="panel-header"><h3>Переслать</h3>
+                    <button class="icon-btn" id="forwardCloseBtn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                    </button>
+                </div>
+                <div class="search-box"><input type="text" placeholder="Поиск..." class="search-input" id="forwardSearchInput"></div>
+                <div class="contacts-list" id="forwardChats"></div>
+            </div>
+        </div>
+
+        <!-- IMAGE PREVIEW OVERLAY -->
+        <div class="overlay" id="imageOverlay">
+            <button class="icon-btn image-close" id="imageCloseBtn" style="position:absolute;top:20px;right:20px;z-index:10;background:rgba(0,0,0,0.5)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+            <img src="" alt="Preview" id="imagePreview" style="max-width:90%;max-height:90%;object-fit:contain;border-radius:12px">
+        </div>
+
+        <!-- HIDDEN FILE INPUT -->
+        <input type="file" id="fileInput" accept="image/*,video/*,application/pdf,.doc,.docx,.txt" style="display:none" multiple>
+    </div>
     <script type="module" src="js/app.js"></script>
 </body>
 </html>

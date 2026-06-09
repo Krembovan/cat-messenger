@@ -35,6 +35,14 @@
     gap: 12px;
     flex: 1;
     min-width: 0;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 12px;
+    transition: background 0.15s;
+}
+
+.chat-user-info:active {
+    background: var(--bg-hover);
 }
 
 .chat-avatar-main {

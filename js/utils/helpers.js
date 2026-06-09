@@ -6,8 +6,7 @@ export const Helpers = {
     },
     
     formatDate(date) {
-        const options = { day: 'numeric', month: 'long' };
-        return date.toLocaleDateString('ru-RU', options);
+        return date.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' });
     },
     
     isToday(date) {
@@ -20,10 +19,7 @@ export const Helpers = {
     debounce(func, wait) {
         let timeout;
         return function executedFunction(...args) {
-            const later = () => {
-                clearTimeout(timeout);
-                func(...args);
-            };
+            const later = () => { clearTimeout(timeout); func(...args); };
             clearTimeout(timeout);
             timeout = setTimeout(later, wait);
         };
@@ -42,5 +38,19 @@ export const Helpers = {
     
     generateId() {
         return Date.now().toString(36) + Math.random().toString(36).substr(2);
+    },
+    
+    formatFileSize(bytes) {
+        if (bytes < 1024) return bytes + ' B';
+        if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+        return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+    },
+    
+    showToast(text) {
+        const toast = document.createElement('div');
+        toast.className = 'notification';
+        toast.textContent = text;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 2000);
     }
 };

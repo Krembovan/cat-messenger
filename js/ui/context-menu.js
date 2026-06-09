@@ -35,12 +35,18 @@ export const ContextMenu = {
     show(x, y, msgId) {
         this.currentMsgId = msgId;
         
-        const maxX = window.innerWidth - 180;
-        const maxY = window.innerHeight - 200;
+        const editItem = this.elements.menu.querySelector('[data-action="edit"]');
+        const chat = State.getCurrentChat();
+        const msg = chat?.messages.find(m => m.id === msgId);
         
-        this.elements.menu.style.left = Math.min(x, maxX) + 'px';
-        this.elements.menu.style.top = Math.min(y, maxY) + 'px';
+        if (editItem) {
+            editItem.style.display = (msg && !msg.incoming) ? 'flex' : 'none';
+        }
+        
+        this.elements.menu.style.left = Math.min(x, window.innerWidth - 180) + 'px';
+        this.elements.menu.style.top = Math.min(y, window.innerHeight - 280) + 'px';
         this.elements.menu.classList.add('active');
+        this.elements.menu.dataset.msgId = msgId;
     },
     
     hide() {
@@ -53,52 +59,65 @@ export const ContextMenu = {
         
         const chat = State.getCurrentChat();
         const msgIndex = chat.messages.findIndex(m => m.id === this.currentMsgId);
-        
         if (msgIndex === -1) return;
         
         switch(action) {
+            case 'react':
+                document.getElementById('reactionPicker').classList.add('active');
+                break;
             case 'reply':
                 State.setReplyTo(this.currentMsgId);
                 break;
-                
             case 'copy':
                 navigator.clipboard.writeText(chat.messages[msgIndex].text);
                 this.showNotification('Скопировано!');
                 break;
-                
+            case 'edit':
+                State.setEditMessage(this.currentMsgId);
+                break;
             case 'forward':
-                this.showNotification('Пересылка сообщения');
+                this.doForward();
                 break;
-                
-            case 'pin':
-                API.togglePin(State.currentChat);
+            case 'select':
+                State.toggleSelectMode();
+                State.toggleMessageSelection(this.currentMsgId);
                 break;
-                
             case 'delete':
                 API.deleteMessage(State.currentChat, this.currentMsgId);
                 break;
         }
     },
     
-    showNotification(text) {
-        const notification = document.createElement('div');
-        notification.className = 'notification';
-        notification.textContent = text;
-        notification.style.cssText = `
-            position: fixed;
-            bottom: 100px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--bg-tertiary);
-            color: var(--text-primary);
-            padding: 12px 24px;
-            border-radius: 12px;
-            font-size: 14px;
-            z-index: 200;
-            animation: fadeInOut 2s ease;
-        `;
+    doForward() {
+        const selected = new Set([this.currentMsgId]);
+        State.selectedMessages = selected;
+        State.selectMode = false;
         
-        document.body.appendChild(notification);
-        setTimeout(() => notification.remove(), 2000);
+        const overlay = document.getElementById('forwardOverlay');
+        overlay.classList.add('active');
+        
+        const list = document.getElementById('forwardChats');
+        const forwardChats = Object.values(State.chats).filter(c => c.id !== State.currentChat);
+        list.innerHTML = forwardChats.map(chat => `
+            <div class="contact-item" data-chat="${chat.id}">
+                <img src="${chat.avatar}" alt="${chat.name}" class="contact-avatar">
+                <span class="contact-name">${chat.name}</span>
+            </div>
+        `).join('');
+        
+        list.querySelectorAll('.contact-item').forEach(item => {
+            item.addEventListener('click', () => {
+                API.forwardMessages(State.currentChat, item.dataset.chat, [this.currentMsgId]);
+                overlay.classList.remove('active');
+            });
+        });
+    },
+    
+    showNotification(text) {
+        const notif = document.createElement('div');
+        notif.className = 'notification';
+        notif.textContent = text;
+        document.body.appendChild(notif);
+        setTimeout(() => notif.remove(), 2000);
     }
 };
