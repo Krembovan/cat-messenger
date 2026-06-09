@@ -4,8 +4,7 @@ const STORAGE_KEY = 'cat_messenger';
 
 const DEFAULT_CHATS = {
     felix: {
-        id: 'felix', name: 'Алексей', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Felix',
-        status: 'В сети', online: true, pinned: false, muted: false,
+        id: 'felix', name: 'Алексей', status: 'В сети', online: true, pinned: false, muted: false,
         messages: [
             { id: 1, text: 'Привет! Как дела?', time: '14:20', incoming: true, reactions: { '❤️': ['other'] } },
             { id: 2, text: 'Привет! Всё отлично, работаю над новым проектом', time: '14:22', incoming: false, status: 'read', reactions: {} },
@@ -15,7 +14,7 @@ const DEFAULT_CHATS = {
         ]
     },
     maria: {
-        id: 'maria', name: 'Мария', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Maria',
+        id: 'maria', name: 'Мария',
         status: 'В сети', online: true, pinned: false, muted: false,
         messages: [
             { id: 1, text: 'Привет! Как дела с проектом?', time: '12:15', incoming: true, reactions: {} },
@@ -23,7 +22,7 @@ const DEFAULT_CHATS = {
         ]
     },
     team: {
-        id: 'team', name: 'Рабочий чат', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Team',
+        id: 'team', name: 'Рабочий чат',
         status: '5 участников', online: false, pinned: true, muted: false,
         messages: [
             { id: 1, text: 'Документы отправлены', time: '18:45', incoming: true, sender: 'Иван', reactions: {} },
@@ -31,12 +30,12 @@ const DEFAULT_CHATS = {
         ]
     },
     dmitry: {
-        id: 'dmitry', name: 'Дмитрий', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Dmitry',
+        id: 'dmitry', name: 'Дмитрий',
         status: 'Был недавно', online: false, pinned: false, muted: false,
         messages: [{ id: 1, text: 'Спасибо за помощь!', time: '10:30', incoming: true, reactions: {} }]
     },
     anna: {
-        id: 'anna', name: 'Анна', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Anna',
+        id: 'anna', name: 'Анна',
         status: 'В сети', online: true, pinned: false, muted: false,
         messages: [
             { id: 1, text: 'Увидимся на конференции!', time: '09:00', incoming: true, reactions: {} },
@@ -44,7 +43,7 @@ const DEFAULT_CHATS = {
         ]
     },
     peter: {
-        id: 'peter', name: 'Пётр', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Peter',
+        id: 'peter', name: 'Пётр',
         status: 'Был давно', online: false, pinned: false, muted: false,
         messages: [{ id: 1, text: 'Фото от 8 марта 📷', time: '14:20', incoming: true, reactions: {} }]
     }

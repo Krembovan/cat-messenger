@@ -68,7 +68,7 @@ export const Sidebar = {
         return `
             <div class="chat-item ${isActive ? 'active' : ''}${chat.muted ? ' muted' : ''}" data-chat="${chat.id}">
                 <div class="chat-avatar">
-                    <img src="${chat.avatar}" alt="${chat.name}">
+                    ${Helpers.avatarHtml(chat.name, 48)}
                     <span class="status ${chat.online ? 'online' : 'offline'}"></span>
                 </div>
                 <div class="chat-info">

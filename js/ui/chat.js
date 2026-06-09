@@ -1,5 +1,6 @@
 import { State } from '../state.js';
 import { API } from '../api.js';
+import { Helpers } from '../utils/helpers.js';
 import { Messages } from './messages.js';
 import { Input } from './input.js';
 import { Profile } from './profile.js';
@@ -47,11 +48,15 @@ export const Chat = {
         if (!chat) return;
         
         this.elements.chatName.textContent = chat.name;
-        this.elements.chatAvatar.src = chat.avatar;
+        const ca = this.elements.chatAvatar;
+        ca.style.background = Helpers.nameToColor(chat.name);
+        ca.textContent = Helpers.getInitials(chat.name);
         this.elements.chatStatus.textContent = chat.status;
         this.elements.chatStatus.style.color = chat.online
             ? 'var(--online)' : 'var(--text-muted)';
-        this.elements.typingAvatar.src = chat.avatar;
+        const ta = this.elements.typingAvatar;
+        ta.style.background = Helpers.nameToColor(chat.name);
+        ta.textContent = Helpers.getInitials(chat.name);
         
         Messages.render();
         Input.clear();

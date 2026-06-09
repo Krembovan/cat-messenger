@@ -1,33 +1,36 @@
 .messages-container {
     flex: 1;
     overflow-y: auto;
-    padding: 16px;
+    padding: 12px 16px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 4px;
     -webkit-overflow-scrolling: touch;
 }
 
 .messages-container::-webkit-scrollbar {
-    display: none;
+    width: 4px;
+}
+
+.messages-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.messages-container::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 2px;
 }
 
 .message {
     display: flex;
     gap: 8px;
-    max-width: 85%;
-    animation: messageIn 0.2s ease;
+    max-width: 78%;
+    animation: messageIn 0.15s ease;
 }
 
 @keyframes messageIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .message.incoming {
@@ -42,22 +45,22 @@
 .message.date-divider {
     align-self: center;
     max-width: 100%;
-    margin: 8px 0;
+    margin: 12px 0 8px;
 }
 
 .message.date-divider span {
     background: var(--bg-tertiary);
-    padding: 6px 14px;
-    border-radius: 16px;
-    font-size: 12px;
-    color: var(--text-secondary);
+    padding: 5px 12px;
+    border-radius: 12px;
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 500;
 }
 
 .message-avatar {
-    width: 32px;
-    height: 32px;
-    border-radius: 10px;
-    object-fit: cover;
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
     flex-shrink: 0;
 }
 
@@ -72,58 +75,68 @@
 }
 
 .message-sender {
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 600;
     color: var(--accent);
-    margin-bottom: 2px;
+    margin-bottom: 1px;
+    padding: 0 2px;
 }
 
 .message-reply {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--text-muted);
-    padding: 6px 10px;
-    background: rgba(255,255,255,0.05);
-    border-radius: 8px;
+    padding: 4px 8px;
+    background: rgba(255,255,255,0.03);
+    border-radius: var(--radius-sm);
     border-left: 2px solid var(--accent);
-    margin-bottom: 4px;
-    max-width: 250px;
+    margin-bottom: 3px;
+    max-width: 220px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
 .message-bubble {
-    padding: 10px 14px;
-    border-radius: 18px;
+    padding: 8px 12px;
+    border-radius: var(--radius-lg);
     line-height: 1.45;
     word-wrap: break-word;
+    position: relative;
 }
 
 .message.incoming .message-bubble {
     background: var(--message-incoming);
     border-bottom-left-radius: 4px;
+    border: 1px solid var(--border);
 }
 
 .message.outgoing .message-bubble {
     background: var(--message-outgoing);
     border-bottom-right-radius: 4px;
+    color: #fff;
 }
 
 .message-bubble p {
-    font-size: 15px;
+    font-size: 14px;
     margin: 0;
 }
 
 .message-meta {
     display: flex;
     align-items: center;
-    gap: 4px;
-    padding: 0 4px;
+    gap: 3px;
+    padding: 0 3px;
+    margin-top: 1px;
 }
 
 .message-time {
-    font-size: 11px;
+    font-size: 10px;
     color: var(--text-muted);
+    font-weight: 500;
+}
+
+.message.outgoing .message-time {
+    color: rgba(255,255,255,0.5);
 }
 
 .message-status {
@@ -134,4 +147,43 @@
 
 .message-status.read {
     color: var(--accent);
+}
+
+.message.outgoing .message-status {
+    color: rgba(255,255,255,0.4);
+}
+
+.message.outgoing .message-status.read {
+    color: var(--online);
+}
+
+.message-selector {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--text-muted);
+    border-radius: 50%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: all 0.12s ease;
+    margin: auto 4px;
+}
+
+.select-mode-active .message-selector {
+    display: flex;
+}
+
+.message-selector.checked {
+    background: var(--accent);
+    border-color: var(--accent);
+}
+
+.message-selector.checked::after {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background: white;
+    border-radius: 50%;
 }

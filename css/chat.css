@@ -9,7 +9,7 @@
     left: 0;
     z-index: 20;
     transform: translateX(100%);
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .chat-main.active {
@@ -17,39 +17,39 @@
 }
 
 .chat-header-main {
-    padding: calc(12px + var(--safe-top)) 8px 12px;
+    padding: calc(10px + var(--safe-top)) 10px 10px;
     display: flex;
     align-items: center;
     gap: 4px;
     border-bottom: 1px solid var(--border);
     background: var(--bg-secondary);
+    min-height: 56px;
 }
 
 .back-btn {
-    margin-right: 4px;
+    margin-right: 2px;
 }
 
 .chat-user-info {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     flex: 1;
     min-width: 0;
     cursor: pointer;
-    padding: 4px 8px;
-    border-radius: 12px;
-    transition: background 0.15s;
+    padding: 4px 6px;
+    border-radius: var(--radius-sm);
+    transition: background 0.12s ease;
 }
 
-.chat-user-info:active {
+.chat-user-info:hover {
     background: var(--bg-hover);
 }
 
 .chat-avatar-main {
-    width: 40px;
-    height: 40px;
-    border-radius: 12px;
-    object-fit: cover;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
     flex-shrink: 0;
 }
 
@@ -58,7 +58,7 @@
 }
 
 .chat-user-name {
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 600;
     white-space: nowrap;
     overflow: hidden;
@@ -67,6 +67,7 @@
 
 .chat-user-status {
     font-size: 12px;
+    color: var(--text-muted);
 }
 
 .chat-actions {
@@ -77,10 +78,10 @@
 .reply-preview {
     display: none;
     align-items: center;
-    padding: 10px 16px;
+    padding: 8px 14px;
     background: var(--bg-tertiary);
     border-left: 3px solid var(--accent);
-    gap: 12px;
+    gap: 10px;
 }
 
 .reply-preview.active {
@@ -93,19 +94,20 @@
 }
 
 .reply-label {
-    font-size: 11px;
+    font-size: 10px;
     color: var(--accent);
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    font-weight: 600;
 }
 
 .reply-text {
-    font-size: 13px;
+    font-size: 12px;
     color: var(--text-secondary);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    margin-top: 2px;
+    margin-top: 1px;
 }
 
 .reply-cancel {
@@ -113,17 +115,18 @@
     border: none;
     color: var(--text-muted);
     cursor: pointer;
-    padding: 8px;
-    border-radius: 8px;
+    padding: 6px;
+    border-radius: var(--radius-sm);
     display: flex;
-    transition: all 0.15s;
+    transition: all 0.12s ease;
 }
 
-.reply-cancel:active {
+.reply-cancel:hover {
     background: var(--bg-hover);
+    color: var(--text-secondary);
 }
 
 .reply-cancel svg {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
 }

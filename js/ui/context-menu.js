@@ -1,5 +1,6 @@
 import { State } from '../state.js';
 import { API } from '../api.js';
+import { Helpers } from '../utils/helpers.js';
 
 export const ContextMenu = {
     elements: {},
@@ -100,7 +101,7 @@ export const ContextMenu = {
         const otherChats = Object.values(State.chats).filter(c => c.id !== State.currentChat);
         list.innerHTML = otherChats.map(chat => `
             <div class="contact-item" data-chat="${chat.id}">
-                <img src="${chat.avatar}" alt="${chat.name}" class="contact-avatar">
+                ${Helpers.avatarHtml(chat.name, 40, 'contact-avatar')}
                 <span class="contact-name">${chat.name}</span>
             </div>
         `).join('');

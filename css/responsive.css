@@ -14,48 +14,29 @@
     .back-btn { display: none; }
 
     .emoji-picker {
-        width: 340px;
+        width: 320px;
         left: auto;
-        right: 80px;
-        border-radius: 16px 16px 0 0;
-        bottom: 70px;
+        right: 60px;
+        border-radius: 14px 14px 0 0;
+        bottom: 64px;
+        border: 1px solid var(--border);
+        border-bottom: none;
     }
 
-    .message { max-width: 60%; }
+    .message {
+        max-width: 55%;
+    }
 
-    .profile-overlay {
+    .profile-overlay, .overlay {
         align-items: center;
     }
 
-    .profile-panel {
-        border-radius: 24px;
-        max-height: 80vh;
-        height: auto;
-        animation: scaleIn 0.25s ease;
-    }
-
-    @keyframes scaleIn {
-        from { transform: scale(0.95); opacity: 0; }
-        to { transform: scale(1); opacity: 1; }
-    }
-
-    .overlay {
-        align-items: center;
-    }
-
-    .modal, .panel {
-        border-radius: 24px;
-        max-height: 70vh;
-        max-width: 420px;
-        animation: scaleIn 0.25s ease;
-    }
-
-    .voice-recorder {
-        border-radius: 12px;
-    }
-
-    .reaction-picker {
-        width: auto;
+    .profile-panel, .modal, .panel {
+        border-radius: 18px;
+        max-height: 65vh;
+        max-width: 400px;
+        border: 1px solid var(--border);
+        animation: menuScaleIn 0.15s ease;
     }
 
     .voice-btn {

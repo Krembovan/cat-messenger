@@ -205,7 +205,7 @@ export const Modals = {
         
         list.innerHTML = filtered.map(chat => `
             <div class="contact-item" data-chat="${chat.id}">
-                <img src="${chat.avatar}" alt="${chat.name}" class="contact-avatar">
+                ${Helpers.avatarHtml(chat.name, 40, 'contact-avatar')}
                 <span class="contact-name">${chat.name}</span>
             </div>
         `).join('');
@@ -227,7 +227,7 @@ export const Modals = {
         
         list.innerHTML = filtered.map(chat => `
             <div class="contact-item" data-chat="${chat.id}">
-                <img src="${chat.avatar}" alt="${chat.name}" class="contact-avatar">
+                ${Helpers.avatarHtml(chat.name, 40, 'contact-avatar')}
                 <span class="contact-name">${chat.name}</span>
             </div>
         `).join('');

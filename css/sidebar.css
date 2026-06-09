@@ -8,7 +8,8 @@
     top: 0;
     left: 0;
     z-index: 10;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-right: 1px solid var(--border);
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .sidebar.hidden {
@@ -30,15 +31,15 @@
 }
 
 .logo-icon {
-    width: 32px;
-    height: 32px;
+    width: 30px;
+    height: 30px;
     color: var(--accent);
 }
 
 .logo-text {
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 700;
-    letter-spacing: -0.5px;
+    letter-spacing: -0.3px;
 }
 
 .search-box {
@@ -50,21 +51,22 @@
     position: absolute;
     left: 28px;
     top: 12px;
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
     color: var(--text-muted);
+    pointer-events: none;
 }
 
 .search-input {
     width: 100%;
     background: var(--bg-tertiary);
-    border: none;
-    border-radius: 12px;
-    padding: 12px 16px 12px 44px;
-    font-size: 15px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 10px 14px 10px 38px;
+    font-size: 13px;
     color: var(--text-primary);
     outline: none;
-    transition: all 0.2s;
+    transition: all 0.15s ease;
 }
 
 .search-input::placeholder {
@@ -72,7 +74,9 @@
 }
 
 .search-input:focus {
+    border-color: var(--accent);
     background: var(--bg-primary);
+    box-shadow: 0 0 0 2px var(--accent-dim);
 }
 
 .chats-list {
@@ -83,26 +87,36 @@
 }
 
 .chats-list::-webkit-scrollbar {
-    display: none;
+    width: 4px;
+}
+
+.chats-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.chats-list::-webkit-scrollbar-thumb {
+    background: var(--bg-tertiary);
+    border-radius: 2px;
 }
 
 .chat-item {
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 12px;
-    border-radius: 16px;
+    padding: 10px 12px;
+    border-radius: var(--radius-md);
     cursor: pointer;
-    transition: background 0.15s;
+    transition: background 0.12s ease;
     position: relative;
 }
 
-.chat-item:active {
+.chat-item:hover {
     background: var(--bg-hover);
 }
 
 .chat-item.active {
     background: var(--bg-tertiary);
+    box-shadow: inset 2px 0 0 var(--accent);
 }
 
 .chat-avatar {
@@ -110,30 +124,25 @@
     flex-shrink: 0;
 }
 
-.chat-avatar img {
-    width: 54px;
-    height: 54px;
-    border-radius: 18px;
-    object-fit: cover;
+.chat-avatar .avatar-initial {
+    width: 48px;
+    height: 48px;
+    font-size: 16px;
+    border-radius: var(--radius-md);
 }
 
 .status {
     position: absolute;
-    bottom: 2px;
-    right: 2px;
-    width: 12px;
-    height: 12px;
+    bottom: 1px;
+    right: 1px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
     border: 2px solid var(--bg-secondary);
 }
 
-.status.online {
-    background: var(--online);
-}
-
-.status.offline {
-    background: var(--offline);
-}
+.status.online { background: var(--online); }
+.status.offline { background: var(--offline); }
 
 .chat-info {
     flex: 1;
@@ -144,21 +153,22 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 4px;
+    margin-bottom: 2px;
 }
 
 .chat-name {
     font-weight: 600;
-    font-size: 16px;
+    font-size: 14px;
 }
 
 .chat-time {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--text-muted);
+    font-weight: 500;
 }
 
 .chat-preview {
-    font-size: 14px;
+    font-size: 13px;
     color: var(--text-secondary);
     white-space: nowrap;
     overflow: hidden;
@@ -166,34 +176,9 @@
 }
 
 .pin-icon {
-    font-size: 12px;
+    font-size: 10px;
     position: absolute;
-    top: 8px;
-    right: 8px;
-}
-
-.sidebar-footer {
-    padding: 12px 16px calc(12px + var(--safe-bottom));
-    border-top: 1px solid var(--border);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.user-profile {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.user-avatar {
-    width: 42px;
-    height: 42px;
-    border-radius: 14px;
-    object-fit: cover;
-}
-
-.user-name {
-    font-weight: 500;
-    font-size: 15px;
+    top: 10px;
+    right: 10px;
+    opacity: 0.7;
 }

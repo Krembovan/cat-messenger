@@ -1,5 +1,6 @@
 import { State } from '../state.js';
 import { API } from '../api.js';
+import { Helpers } from '../utils/helpers.js';
 
 export const Profile = {
     elements: {},
@@ -69,7 +70,8 @@ export const Profile = {
         const chat = API.getChat(chatId);
         if (!chat) return;
         
-        this.elements.avatar.src = chat.avatar;
+        this.elements.avatar.style.background = Helpers.nameToColor(chat.name);
+        this.elements.avatar.textContent = Helpers.getInitials(chat.name);
         this.elements.name.textContent = chat.name;
         this.elements.status.textContent = chat.status;
         this.elements.status.style.color = chat.online ? 'var(--online)' : 'var(--text-muted)';

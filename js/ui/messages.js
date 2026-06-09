@@ -135,7 +135,7 @@ export const Messages = {
         const hasReactions = msg.reactions && Object.keys(msg.reactions).length > 0;
         
         const avatarHtml = !outgoing
-            ? `<img src="${chat.avatar}" alt="Avatar" class="message-avatar">`
+            ? `${Helpers.avatarHtml(chat.name, 30, 'message-avatar')}`
             : '';
         const senderHtml = msg.sender
             ? `<span class="message-sender">${Helpers.escapeHtml(msg.sender)}</span>`

@@ -1,50 +1,48 @@
 .emoji-picker {
     display: none;
     position: absolute;
-    bottom: 70px;
+    bottom: 64px;
     left: 0;
     right: 0;
-    background: var(--bg-secondary);
+    background: var(--bg-surface);
     border-top: 1px solid var(--border);
-    padding: 12px;
-    max-height: 250px;
+    padding: 10px;
+    max-height: 230px;
     overflow-y: auto;
     z-index: 30;
-    animation: slideUp 0.2s ease;
+    animation: emojiSlideUp 0.15s ease;
 }
 
 .emoji-picker.active {
     display: block;
 }
 
-@keyframes slideUp {
-    from {
-        transform: translateY(10px);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
+@keyframes emojiSlideUp {
+    from { transform: translateY(8px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
 }
 
 .emoji-grid {
     display: grid;
     grid-template-columns: repeat(8, 1fr);
-    gap: 4px;
+    gap: 2px;
 }
 
 .emoji {
-    font-size: 24px;
-    padding: 8px;
+    font-size: 22px;
+    padding: 7px;
     text-align: center;
     cursor: pointer;
-    border-radius: 8px;
-    transition: all 0.15s;
+    border-radius: var(--radius-sm);
+    transition: all 0.1s ease;
     user-select: none;
 }
 
-.emoji:active {
+.emoji:hover {
     background: var(--bg-hover);
+}
+
+.emoji:active {
     transform: scale(0.9);
+    background: var(--bg-tertiary);
 }
