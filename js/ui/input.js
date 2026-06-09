@@ -144,9 +144,11 @@ export const Input = {
     analyser: null,
     animFrame: null,
     waveBars: [],
+    amplitudes: [],
     
     startVoiceRecord() {
         this.elements.voiceRecorder.classList.add('active', 'recording');
+        this.amplitudes = [];
         
         this.waveBars = Array.from(this.elements.voiceWave.children);
         
@@ -179,12 +181,15 @@ export const Input = {
         if (!this.analyser) return;
         const data = new Uint8Array(this.analyser.frequencyBinCount);
         this.analyser.getByteFrequencyData(data);
+        let max = 0;
         const step = Math.floor(data.length / this.waveBars.length);
         this.waveBars.forEach((bar, i) => {
             const val = data[i * step] / 255;
+            if (val > max) max = val;
             const h = 3 + val * 33;
             bar.style.height = h + 'px';
         });
+        this.amplitudes.push(max);
         this.animFrame = requestAnimationFrame(() => this._drawWave());
     },
     
@@ -226,11 +231,15 @@ export const Input = {
     finishRecording(duration) {
         if (duration < 1) return;
         
+        const amps = this.amplitudes.length > 0 ? [...this.amplitudes] : null;
+        this.amplitudes = [];
+        
         API.addMessage(State.currentChat, {
             text: '🎤 Голосовое сообщение',
             incoming: false,
             type: 'voice',
-            voiceDuration: duration
+            voiceDuration: duration,
+            voiceAmplitudes: amps
         });
     },
     

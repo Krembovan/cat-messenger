@@ -189,12 +189,24 @@ export const Messages = {
     },
     
     renderVoiceBubble(msg) {
-        const seed = msg.id ? msg.id.charCodeAt(0) + (msg.id.charCodeAt(1) || 0) : 42;
+        const amps = msg.voiceAmplitudes;
+        const count = 20;
         const bars = [];
-        for (let i = 0; i < 16; i++) {
-            const base = Math.sin(i * 0.7 + seed * 0.13) * 0.5 + 0.5;
-            const h = 4 + base * 20 + Math.sin(i * 2.1 + seed) * 6;
-            bars.push(`<div class="bar" style="height:${h}px"></div>`);
+        if (amps && amps.length > 0) {
+            const step = Math.max(1, Math.floor(amps.length / count));
+            for (let i = 0; i < count; i++) {
+                const slice = amps.slice(i * step, (i + 1) * step);
+                const avg = slice.reduce((a, b) => a + b, 0) / slice.length;
+                const h = 4 + avg * 22;
+                bars.push(`<div class="bar" style="height:${h}px"></div>`);
+            }
+        } else {
+            const seed = msg.id ? msg.id.charCodeAt(0) + (msg.id.charCodeAt(1) || 0) : 42;
+            for (let i = 0; i < count; i++) {
+                const base = Math.sin(i * 0.7 + seed * 0.13) * 0.5 + 0.5;
+                const h = 4 + base * 18 + Math.sin(i * 2.1 + seed) * 5;
+                bars.push(`<div class="bar" style="height:${h}px"></div>`);
+            }
         }
         const duration = msg.voiceDuration ? `${msg.voiceDuration}c` : '';
         return `
