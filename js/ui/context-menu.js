@@ -37,7 +37,7 @@ export const ContextMenu = {
         
         const editItem = this.elements.menu.querySelector('[data-action="edit"]');
         const chat = State.getCurrentChat();
-        const msg = chat?.messages.find(m => m.id === msgId);
+        const msg = chat?.messages.find(m => String(m.id) === String(msgId));
         
         if (editItem) {
             editItem.style.display = (msg && !msg.incoming) ? 'flex' : 'none';
@@ -46,7 +46,7 @@ export const ContextMenu = {
         this.elements.menu.style.left = Math.min(x, window.innerWidth - 180) + 'px';
         this.elements.menu.style.top = Math.min(y, window.innerHeight - 280) + 'px';
         this.elements.menu.classList.add('active');
-        this.elements.menu.dataset.msgId = msgId;
+        this.elements.menu.dataset.msgId = String(msgId);
     },
     
     hide() {
@@ -58,7 +58,8 @@ export const ContextMenu = {
         if (!this.currentMsgId || !State.currentChat) return;
         
         const chat = State.getCurrentChat();
-        const msgIndex = chat.messages.findIndex(m => m.id === this.currentMsgId);
+        const msgStrId = String(this.currentMsgId);
+        const msgIndex = chat.messages.findIndex(m => String(m.id) === msgStrId);
         if (msgIndex === -1) return;
         
         switch(action) {

@@ -138,11 +138,14 @@ export const Modals = {
         const picker = document.getElementById('reactionPicker');
         
         picker.querySelectorAll('.react').forEach(el => {
-            el.addEventListener('click', () => {
+            el.addEventListener('click', (e) => {
+                e.stopPropagation();
                 const msgId = picker._msgId;
                 const emoji = el.dataset.emoji;
+                if (!msgId || !emoji) return;
                 API.toggleReaction(State.currentChat, msgId, emoji);
                 picker.classList.remove('active');
+                delete picker._msgId;
             });
         });
     },

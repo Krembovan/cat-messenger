@@ -109,7 +109,7 @@ export const API = {
     editMessage(chatId, messageId, newText) {
         const chat = State.chats[chatId];
         if (!chat) return false;
-        const msg = chat.messages.find(m => m.id === messageId);
+        const msg = chat.messages.find(m => String(m.id) === String(messageId));
         if (!msg) return false;
         msg.text = newText;
         msg.edited = true;
@@ -121,7 +121,7 @@ export const API = {
     deleteMessage(chatId, messageId) {
         const chat = State.chats[chatId];
         if (!chat) return false;
-        const index = chat.messages.findIndex(m => m.id === messageId);
+        const index = chat.messages.findIndex(m => String(m.id) === String(messageId));
         if (index === -1) return false;
         chat.messages.splice(index, 1);
         this.save();
@@ -143,7 +143,7 @@ export const API = {
         if (!fromChat || !toChat) return;
         
         messageIds.forEach(mid => {
-            const msg = fromChat.messages.find(m => m.id === mid);
+            const msg = fromChat.messages.find(m => String(m.id) === String(mid));
             if (msg) {
                 toChat.messages.push({
                     id: Date.now().toString(36) + Math.random().toString(36).substr(2, 6),
@@ -165,7 +165,7 @@ export const API = {
     toggleReaction(chatId, messageId, emoji) {
         const chat = State.chats[chatId];
         if (!chat) return;
-        const msg = chat.messages.find(m => m.id === messageId);
+        const msg = chat.messages.find(m => String(m.id) === String(messageId));
         if (!msg) return;
         
         if (!msg.reactions) msg.reactions = {};
@@ -216,7 +216,7 @@ export const API = {
     updateMessageStatus(chatId, messageId, status) {
         const chat = State.chats[chatId];
         if (!chat) return;
-        const msg = chat.messages.find(m => m.id === messageId);
+        const msg = chat.messages.find(m => String(m.id) === String(messageId));
         if (msg) { msg.status = status; this.save(); }
     },
     

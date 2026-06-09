@@ -199,7 +199,7 @@ export const Input = {
     
     showReplyPreview() {
         const chat = State.getCurrentChat();
-        const msg = chat?.messages.find(m => m.id === State.replyToMessageId);
+        const msg = chat?.messages.find(m => String(m.id) === String(State.replyToMessageId));
         if (msg) {
             this.elements.replyText.textContent = msg.text.substring(0, 50) + '...';
             this.elements.replyPreview.classList.add('active');
@@ -213,7 +213,7 @@ export const Input = {
     
     showEditPreview(msgId) {
         const chat = State.getCurrentChat();
-        const msg = chat?.messages.find(m => m.id === msgId);
+        const msg = chat?.messages.find(m => String(m.id) === String(msgId));
         if (msg) {
             this.elements.editPreviewText.textContent = msg.text.substring(0, 50) + '...';
             this.elements.editPreview.classList.add('active');

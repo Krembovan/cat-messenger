@@ -216,7 +216,7 @@ export const Messages = {
     },
     
     renderReply(replyToId, chat) {
-        const replyMsg = chat.messages.find(m => m.id === replyToId);
+        const replyMsg = chat.messages.find(m => String(m.id) === String(replyToId));
         if (!replyMsg) return '';
         const text = replyMsg.text.substring(0, 50) + (replyMsg.text.length > 50 ? '...' : '');
         return `<div class="message-reply">${Helpers.escapeHtml(text)}</div>`;
@@ -232,9 +232,11 @@ export const Messages = {
     },
     
     showReactionPicker(x, y, msgEl) {
-        const msgId = msgEl.dataset.id;
+        const msgId = String(msgEl.dataset.id);
         const chat = State.getCurrentChat();
-        const msg = chat?.messages.find(m => m.id === msgId);
+        if (!chat) return;
+        
+        const msg = chat.messages.find(m => String(m.id) === msgId);
         if (!msg) return;
         
         this.elements.reactionPicker._msgId = msgId;
