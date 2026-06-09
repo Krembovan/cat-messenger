@@ -270,6 +270,11 @@ export const Messages = {
     },
     
     scrollToBottom() {
-        this.elements.container.scrollTop = this.elements.container.scrollHeight;
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                const el = this.elements.container;
+                el.scrollTop = el.scrollHeight;
+            });
+        });
     }
 };
