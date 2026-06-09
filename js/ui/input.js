@@ -186,7 +186,7 @@ export const Input = {
         this.waveBars.forEach((bar, i) => {
             const val = data[i * step] / 255;
             if (val > max) max = val;
-            const h = 3 + val * 33;
+            const h = max > 0.04 ? (3 + val * 33) : 3;
             bar.style.height = h + 'px';
         });
         this.amplitudes.push(max);

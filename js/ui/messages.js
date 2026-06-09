@@ -192,12 +192,15 @@ export const Messages = {
         const amps = msg.voiceAmplitudes;
         const count = 20;
         const bars = [];
+        let hasAudio = false;
         if (amps && amps.length > 0) {
+            const maxAmp = Math.max(...amps);
+            hasAudio = maxAmp > 0.08;
             const step = Math.max(1, Math.floor(amps.length / count));
             for (let i = 0; i < count; i++) {
                 const slice = amps.slice(i * step, (i + 1) * step);
                 const avg = slice.reduce((a, b) => a + b, 0) / slice.length;
-                const h = 4 + avg * 22;
+                const h = hasAudio ? (4 + avg * 22) : 3;
                 bars.push(`<div class="bar" style="height:${h}px"></div>`);
             }
         } else {
