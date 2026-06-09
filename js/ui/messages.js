@@ -276,9 +276,15 @@ export const Messages = {
         if (!msg) return;
         
         this.elements.reactionPicker._msgId = msgId;
-        this.elements.reactionPicker.style.left = Math.min(x - 80, window.innerWidth - 200) + 'px';
-        this.elements.reactionPicker.style.top = (y - 60) + 'px';
         this.elements.reactionPicker.classList.add('active');
+        
+        const pw = this.elements.reactionPicker.offsetWidth || 200;
+        const left = x - pw / 2;
+        const clampedLeft = Math.max(8, Math.min(left, window.innerWidth - pw - 8));
+        const top = Math.max(8, y - 60);
+        
+        this.elements.reactionPicker.style.left = clampedLeft + 'px';
+        this.elements.reactionPicker.style.top = top + 'px';
         
         ContextMenu.show(x, y + 40, msgId);
     },

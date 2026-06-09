@@ -44,10 +44,16 @@ export const ContextMenu = {
             editItem.style.display = (msg && !msg.incoming) ? 'flex' : 'none';
         }
         
-        this.elements.menu.style.left = Math.min(x, window.innerWidth - 180) + 'px';
-        this.elements.menu.style.top = Math.min(y, window.innerHeight - 280) + 'px';
         this.elements.menu.classList.add('active');
         this.elements.menu.dataset.msgId = String(msgId);
+        
+        const mw = this.elements.menu.offsetWidth || 180;
+        const mh = this.elements.menu.offsetHeight || 200;
+        const left = x + mw > window.innerWidth - 8 ? window.innerWidth - mw - 8 : x;
+        const top = y + mh > window.innerHeight - 8 ? window.innerHeight - mh - 8 : y;
+        
+        this.elements.menu.style.left = left + 'px';
+        this.elements.menu.style.top = top + 'px';
     },
     
     hide() {
