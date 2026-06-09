@@ -16,15 +16,10 @@ const App = {
         
         API.load();
         
-        Sidebar.init();
-        Chat.init();
-        Messages.init();
-        Input.init();
-        Emoji.init();
-        ContextMenu.init();
-        Swipe.init();
-        Profile.init();
-        Modals.init();
+        const modules = [Sidebar, Chat, Messages, Input, Emoji, ContextMenu, Swipe, Profile, Modals];
+        modules.forEach(m => {
+            try { m.init(); } catch (e) { console.error('[CAT] Failed to init module:', e); }
+        });
         
         this.bindGlobalEvents();
         
