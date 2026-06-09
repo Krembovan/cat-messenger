@@ -39,14 +39,6 @@
         animation: menuScaleIn 0.15s ease;
     }
 
-    .voice-btn {
-        display: flex !important;
-    }
-
-    .message-input-container .send-btn {
-        display: flex !important;
-    }
-
     .message-input-container.voice-mode .voice-btn {
         background: var(--accent);
         color: white;
