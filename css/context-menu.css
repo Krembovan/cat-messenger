@@ -1,0 +1,55 @@
+.context-menu {
+    display: none;
+    position: fixed;
+    background: var(--bg-tertiary);
+    border-radius: 16px;
+    padding: 8px;
+    min-width: 180px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    z-index: 100;
+    animation: scaleIn 0.15s ease;
+}
+
+.context-menu.active {
+    display: block;
+}
+
+@keyframes scaleIn {
+    from {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.context-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.15s;
+    font-size: 14px;
+}
+
+.context-item:active {
+    background: var(--bg-hover);
+}
+
+.context-item svg {
+    width: 20px;
+    height: 20px;
+    color: var(--text-secondary);
+}
+
+.context-item.danger {
+    color: var(--danger);
+}
+
+.context-item.danger svg {
+    color: var(--danger);
+}

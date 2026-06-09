@@ -1,0 +1,29 @@
+@media (min-width: 768px) {
+    .sidebar {
+        width: 380px;
+        position: relative;
+        transform: none !important;
+        pointer-events: auto;
+    }
+
+    .chat-main {
+        position: relative;
+        transform: none !important;
+    }
+
+    .back-btn {
+        display: none;
+    }
+
+    .emoji-picker {
+        width: 340px;
+        left: auto;
+        right: 80px;
+        border-radius: 16px 16px 0 0;
+        bottom: 70px;
+    }
+
+    .message {
+        max-width: 60%;
+    }
+}
