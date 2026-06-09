@@ -11,10 +11,6 @@
     display: flex;
 }
 
-.voice-recorder.recording .voice-wave span {
-    animation: waveBounce 0.8s ease infinite;
-}
-
 .voice-cancel-btn {
     background: transparent;
     border: none;
@@ -40,22 +36,8 @@
     width: 3px;
     background: var(--accent);
     border-radius: 2px;
-}
-
-.voice-wave span:nth-child(1) { height: 16px; }
-.voice-wave span:nth-child(2) { height: 26px; }
-.voice-wave span:nth-child(3) { height: 12px; }
-.voice-wave span:nth-child(4) { height: 32px; }
-.voice-wave span:nth-child(5) { height: 18px; }
-.voice-wave span:nth-child(6) { height: 24px; }
-.voice-wave span:nth-child(7) { height: 10px; }
-.voice-wave span:nth-child(8) { height: 28px; }
-.voice-wave span:nth-child(9) { height: 14px; }
-.voice-wave span:nth-child(10) { height: 22px; }
-
-@keyframes waveBounce {
-    0%, 100% { transform: scaleY(0.4); }
-    50% { transform: scaleY(1.0); }
+    transition: height 0.08s ease;
+    min-height: 3px;
 }
 
 .voice-timer {
