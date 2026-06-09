@@ -168,13 +168,20 @@ export const API = {
         if (!msg) return;
         
         if (!msg.reactions) msg.reactions = {};
-        if (!msg.reactions[emoji]) msg.reactions[emoji] = [];
         
-        const idx = msg.reactions[emoji].indexOf('you');
-        if (idx > -1) {
-            msg.reactions[emoji].splice(idx, 1);
+        const already = Object.keys(msg.reactions).find(e => msg.reactions[e].includes('you'));
+        
+        if (already === emoji) {
+            const idx = msg.reactions[emoji].indexOf('you');
+            if (idx > -1) msg.reactions[emoji].splice(idx, 1);
             if (msg.reactions[emoji].length === 0) delete msg.reactions[emoji];
         } else {
+            if (already) {
+                const idx = msg.reactions[already].indexOf('you');
+                if (idx > -1) msg.reactions[already].splice(idx, 1);
+                if (msg.reactions[already].length === 0) delete msg.reactions[already];
+            }
+            if (!msg.reactions[emoji]) msg.reactions[emoji] = [];
             msg.reactions[emoji].push('you');
         }
         
