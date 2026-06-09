@@ -6,6 +6,8 @@ import { ContextMenu } from './context-menu.js';
 export const Messages = {
     elements: {},
     reactionTimeout: null,
+    scrollPositions: {},
+    shouldScrollToBottom: true,
     
     init() {
         this.cacheElements();
@@ -85,11 +87,21 @@ export const Messages = {
                 this.elements.reactionPicker._msgId = null;
             }
         });
+        
+        this.elements.container.addEventListener('scroll', () => {
+            this.saveScrollPosition();
+        });
     },
     
     bindStateEvents() {
         State.subscribe((event, data) => {
-            if (event === 'messageAdded' || event === 'messageEdited' || 
+            if (event === 'chatChanged') {
+                this.shouldScrollToBottom = false;
+                this.render();
+            } else if (event === 'messageAdded') {
+                this.shouldScrollToBottom = true;
+                this.render();
+            } else if (event === 'messageEdited' || 
                 event === 'messageDeleted' || event === 'messagesDeleted' || 
                 event === 'reactionChanged') {
                 this.render();
@@ -106,7 +118,13 @@ export const Messages = {
         if (!chat) return;
         
         this.elements.container.innerHTML = chat.messages.map(msg => this.renderMessage(msg, chat)).join('');
-        this.scrollToBottom();
+        
+        if (this.shouldScrollToBottom) {
+            this.scrollToBottom();
+        } else {
+            this.restoreScrollPosition();
+            this.shouldScrollToBottom = true;
+        }
     },
     
     renderMessage(msg, chat) {
@@ -276,5 +294,23 @@ export const Messages = {
                 el.scrollTop = el.scrollHeight;
             });
         });
+    },
+    
+    saveScrollPosition() {
+        if (!State.currentChat) return;
+        this.scrollPositions[State.currentChat] = this.elements.container.scrollTop;
+    },
+    
+    restoreScrollPosition() {
+        const saved = this.scrollPositions[State.currentChat];
+        if (saved !== undefined) {
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    this.elements.container.scrollTop = saved;
+                });
+            });
+        } else {
+            this.scrollToBottom();
+        }
     }
 };
