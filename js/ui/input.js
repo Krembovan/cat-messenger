@@ -140,11 +140,32 @@ export const Input = {
         }, 2500);
     },
     
+    audioCtx: null,
+    analyser: null,
+    animFrame: null,
+    waveBars: [],
+    
     startVoiceRecord() {
-        State.startRecording();
         this.elements.voiceRecorder.classList.add('active', 'recording');
-        this.elements.voiceWave.classList.add('animating');
         
+        this.waveBars = Array.from(this.elements.voiceWave.children);
+        
+        navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+            this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            this.analyser = this.audioCtx.createAnalyser();
+            this.analyser.fftSize = 64;
+            const source = this.audioCtx.createMediaStreamSource(stream);
+            source.connect(this.analyser);
+            this._drawWave();
+        }).catch(() => {
+            this.waveBars.forEach((b, i) => {
+                const h = 4 + Math.sin(i * 0.5 + Date.now() * 0.01) * 12;
+                b.style.height = h + 'px';
+            });
+            this._simWave();
+        });
+        
+        State.startRecording();
         let seconds = 0;
         State.recordingInterval = setInterval(() => {
             seconds++;
@@ -154,27 +175,55 @@ export const Input = {
         }, 1000);
     },
     
+    _drawWave() {
+        if (!this.analyser) return;
+        const data = new Uint8Array(this.analyser.frequencyBinCount);
+        this.analyser.getByteFrequencyData(data);
+        const step = Math.floor(data.length / this.waveBars.length);
+        this.waveBars.forEach((bar, i) => {
+            const val = data[i * step] / 255;
+            const h = 3 + val * 33;
+            bar.style.height = h + 'px';
+        });
+        this.animFrame = requestAnimationFrame(() => this._drawWave());
+    },
+    
+    _simWave() {
+        if (this.animFrame) return;
+        const draw = () => {
+            if (!this.elements.voiceRecorder.classList.contains('recording')) return;
+            this.waveBars.forEach((b, i) => {
+                const h = 4 + Math.sin(i * 0.5 + Date.now() * 0.005) * 12;
+                b.style.height = h + 'px';
+            });
+            this.animFrame = requestAnimationFrame(draw);
+        };
+        draw();
+    },
+    
     stopVoiceRecord() {
         if (!State.isRecording) return;
         State.stopRecording();
-        
-        this.elements.voiceWave.classList.remove('animating');
+        this._cleanupAudio();
         this.elements.voiceTimer.textContent = '0:00';
         clearInterval(State.recordingInterval);
     },
     
     cancelVoiceRecord() {
-        alert('Запись отменена');
+        this._cleanupAudio();
         this.elements.voiceRecorder.classList.remove('active', 'recording');
-        this.elements.voiceWave.classList.remove('animating');
         this.elements.voiceTimer.textContent = '0:00';
         clearInterval(State.recordingInterval);
         State.isRecording = false;
     },
     
-    finishRecording(duration) {
+    _cleanupAudio() {
+        if (this.animFrame) { cancelAnimationFrame(this.animFrame); this.animFrame = null; }
+        if (this.audioCtx) { this.audioCtx.close().catch(() => {}); this.audioCtx = null; this.analyser = null; }
         this.elements.voiceRecorder.classList.remove('active', 'recording');
-        
+    },
+    
+    finishRecording(duration) {
         if (duration < 1) return;
         
         API.addMessage(State.currentChat, {
