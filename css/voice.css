@@ -3,8 +3,16 @@
     align-items: center;
     padding: 10px 14px;
     gap: 10px;
-    background: var(--bg-secondary);
-    border-top: 1px solid var(--border);
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-top: 1px solid var(--glass-border);
+    animation: voiceSlideUp 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes voiceSlideUp {
+    from { transform: translateY(100%); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
 }
 
 .voice-recorder.active {
@@ -19,6 +27,7 @@
     padding: 6px;
     border-radius: var(--radius-sm);
     display: flex;
+    transition: all 0.12s ease;
 }
 
 .voice-cancel-btn:hover { background: var(--bg-hover); }
@@ -34,9 +43,9 @@
 
 .voice-wave span {
     width: 3px;
-    background: var(--accent);
+    background: linear-gradient(to top, var(--accent), #60a5fa);
     border-radius: 2px;
-    transition: height 0.08s ease;
+    transition: height 0.06s ease;
     min-height: 3px;
 }
 
@@ -46,6 +55,8 @@
     min-width: 36px;
     text-align: center;
     font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    letter-spacing: 0.5px;
 }
 
 .voice-send-btn {
@@ -57,9 +68,11 @@
     border-radius: 50%;
     display: flex;
     transition: all 0.12s ease;
+    box-shadow: 0 2px 8px rgba(59,130,246,0.3);
 }
 
 .voice-send-btn:active { transform: scale(0.92); }
+.voice-send-btn:hover { background: var(--accent-hover); }
 .voice-send-btn svg { width: 20px; height: 20px; }
 
 .message.voice-message .message-bubble {
@@ -92,10 +105,12 @@
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    transition: transform 0.12s ease;
+    transition: all 0.12s ease;
+    box-shadow: 0 2px 6px rgba(59,130,246,0.3);
 }
 
-.voice-play-btn:hover { transform: scale(1.05); }
+.voice-play-btn:hover { transform: scale(1.05); background: var(--accent-hover); }
+.voice-play-btn:active { transform: scale(0.95); }
 .voice-play-btn svg { width: 14px; height: 14px; }
 
 .voice-bars {
@@ -110,13 +125,17 @@
     width: 2px;
     background: var(--text-muted);
     border-radius: 1px;
-    transition: background 0.2s;
+    transition: all 0.15s ease;
 }
 
-.voice-bars .bar.active { background: var(--accent); }
+.voice-bars .bar.active {
+    background: var(--accent);
+    box-shadow: 0 0 4px rgba(59,130,246,0.4);
+}
 
 .voice-duration {
     font-size: 11px;
     color: var(--text-muted);
     margin-left: 6px;
+    font-weight: 500;
 }

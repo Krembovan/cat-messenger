@@ -3,6 +3,9 @@
     align-items: center;
     padding: 6px 16px;
     gap: 6px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(8px);
+    border-top: 1px solid var(--glass-border);
 }
 
 .typing-indicator.active {
@@ -17,7 +20,7 @@
 
 .typing-dots {
     display: flex;
-    gap: 2px;
+    gap: 3px;
 }
 
 .typing-dots span {
@@ -25,7 +28,7 @@
     height: 5px;
     background: var(--text-muted);
     border-radius: 50%;
-    animation: typingBounce 1.4s infinite;
+    animation: typingBounce 1.4s ease infinite;
 }
 
 .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
@@ -33,10 +36,11 @@
 
 @keyframes typingBounce {
     0%, 60%, 100% { transform: translateY(0); }
-    30% { transform: translateY(-3px); }
+    30% { transform: translateY(-4px); background: var(--accent); }
 }
 
 .typing-text {
     font-size: 11px;
     color: var(--text-muted);
+    font-weight: 500;
 }

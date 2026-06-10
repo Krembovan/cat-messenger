@@ -21,9 +21,23 @@
     display: flex;
     align-items: center;
     gap: 4px;
-    border-bottom: 1px solid var(--border);
-    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--glass-border);
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     min-height: 56px;
+    position: relative;
+    z-index: 5;
+}
+
+.chat-header-main::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(59,130,246,0.15), transparent);
 }
 
 .back-btn {
@@ -79,9 +93,23 @@
     display: none;
     align-items: center;
     padding: 8px 14px;
-    background: var(--bg-tertiary);
-    border-left: 3px solid var(--accent);
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--glass-border);
     gap: 10px;
+    position: relative;
+}
+
+.reply-preview::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 4px;
+    bottom: 4px;
+    width: 3px;
+    background: var(--accent-gradient);
+    border-radius: 2px;
 }
 
 .reply-preview.active {

@@ -5,13 +5,15 @@
     right: 12px;
     width: 320px;
     max-height: 360px;
-    background: var(--bg-surface);
-    border: 1px solid var(--border);
+    background: var(--glass-bg);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid var(--glass-border);
     border-radius: var(--radius-lg);
     padding: 12px;
     box-shadow: var(--shadow-lg);
     z-index: 30;
-    animation: emojiSlideUp 0.15s ease;
+    animation: emojiSlideUp 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .emoji-picker.active {
@@ -19,7 +21,7 @@
 }
 
 @keyframes emojiSlideUp {
-    from { transform: translateY(8px); opacity: 0; }
+    from { transform: translateY(12px); opacity: 0; }
     to { transform: translateY(0); opacity: 1; }
 }
 
@@ -41,7 +43,7 @@
 }
 
 .emoji-picker-search:focus {
-    border-color: var(--accent);
+    border-color: rgba(59,130,246,0.3);
     box-shadow: 0 0 0 2px var(--accent-dim);
 }
 

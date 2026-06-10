@@ -6,6 +6,22 @@
     flex-direction: column;
     gap: 4px;
     -webkit-overflow-scrolling: touch;
+    position: relative;
+    background:
+        radial-gradient(circle at 50% 50%, rgba(59,130,246,0.025) 0%, transparent 60%),
+        radial-gradient(circle at 20% 80%, rgba(59,130,246,0.015) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(59,130,246,0.01) 0%, transparent 50%);
+}
+
+.messages-container::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: 24px 24px;
+    pointer-events: none;
 }
 
 .messages-container::-webkit-scrollbar {
@@ -21,16 +37,21 @@
     border-radius: 2px;
 }
 
+.messages-container::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
+}
+
 .message {
     display: flex;
     gap: 8px;
     max-width: 78%;
-    animation: messageIn 0.15s ease;
+    animation: messageIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
 }
 
 @keyframes messageIn {
-    from { opacity: 0; transform: translateY(6px); }
-    to { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; transform: translateY(8px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .message.incoming {
@@ -45,16 +66,17 @@
 .message.date-divider {
     align-self: center;
     max-width: 100%;
-    margin: 12px 0 8px;
+    margin: 16px 0 12px;
 }
 
 .message.date-divider span {
     background: var(--bg-tertiary);
-    padding: 5px 12px;
+    padding: 5px 14px;
     border-radius: 12px;
     font-size: 11px;
     color: var(--text-muted);
     font-weight: 500;
+    border: 1px solid var(--border);
 }
 
 .message-avatar {
@@ -62,6 +84,7 @@
     height: 30px;
     border-radius: 8px;
     flex-shrink: 0;
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.05);
 }
 
 .message-content {
@@ -79,17 +102,18 @@
     font-weight: 600;
     color: var(--accent);
     margin-bottom: 1px;
-    padding: 0 2px;
+    padding: 0 4px;
+    letter-spacing: 0.2px;
 }
 
 .message-reply {
     font-size: 11px;
     color: var(--text-muted);
-    padding: 4px 8px;
+    padding: 5px 10px;
     background: rgba(255,255,255,0.03);
     border-radius: var(--radius-sm);
     border-left: 2px solid var(--accent);
-    margin-bottom: 3px;
+    margin-bottom: 4px;
     max-width: 220px;
     white-space: nowrap;
     overflow: hidden;
@@ -97,7 +121,7 @@
 }
 
 .message-bubble {
-    padding: 8px 12px;
+    padding: 9px 14px;
     border-radius: var(--radius-lg);
     line-height: 1.45;
     word-wrap: break-word;
@@ -106,14 +130,16 @@
 
 .message.incoming .message-bubble {
     background: var(--message-incoming);
+    border: 1px solid var(--message-incoming-border);
     border-bottom-left-radius: 4px;
-    border: 1px solid var(--border);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.3);
 }
 
 .message.outgoing .message-bubble {
-    background: var(--message-outgoing);
+    background: linear-gradient(135deg, var(--message-outgoing-start), var(--message-outgoing-end));
     border-bottom-right-radius: 4px;
     color: #fff;
+    box-shadow: 0 2px 8px rgba(29,78,216,0.25);
 }
 
 .message-bubble p {
@@ -131,7 +157,7 @@
     align-items: center;
     gap: 3px;
     float: right;
-    margin: 2px 0 0 8px;
+    margin: 3px 0 0 8px;
 }
 
 .message-meta {
@@ -147,7 +173,7 @@
 }
 
 .message.outgoing .message-time {
-    color: rgba(255,255,255,0.5);
+    color: rgba(255,255,255,0.55);
 }
 
 .message-status {
@@ -161,11 +187,11 @@
 }
 
 .message.outgoing .message-status {
-    color: rgba(255,255,255,0.4);
+    color: rgba(255,255,255,0.45);
 }
 
 .message.outgoing .message-status.read {
-    color: var(--online);
+    color: #93c5fd;
 }
 
 .message-selector {
@@ -178,7 +204,7 @@
     justify-content: center;
     flex-shrink: 0;
     cursor: pointer;
-    transition: all 0.12s ease;
+    transition: all 0.15s ease;
     margin: auto 4px;
 }
 
@@ -189,6 +215,7 @@
 .message-selector.checked {
     background: var(--accent);
     border-color: var(--accent);
+    box-shadow: 0 0 8px var(--accent-glow);
 }
 
 .message-selector.checked::after {

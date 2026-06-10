@@ -4,6 +4,12 @@
         position: relative;
         transform: none !important;
         pointer-events: auto;
+        border-right: 1px solid var(--glass-border);
+    }
+
+    .sidebar-header {
+        padding: 20px 20px 16px;
+        border-bottom: 1px solid var(--glass-border);
     }
 
     .chat-main {
@@ -17,10 +23,9 @@
         width: 320px;
         left: auto;
         right: 60px;
-        border-radius: 14px 14px 0 0;
+        border-radius: 14px;
         bottom: 64px;
-        border: 1px solid var(--border);
-        border-bottom: none;
+        border: 1px solid var(--glass-border);
     }
 
     .message {
@@ -35,9 +40,17 @@
         border-radius: 18px;
         max-height: 65vh;
         max-width: 400px;
-        border: 1px solid var(--border);
+        border: 1px solid var(--glass-border);
         animation: menuScaleIn 0.15s ease;
     }
 
     .message-image { max-width: 300px; }
+
+    .search-box {
+        padding: 0 20px 16px;
+    }
+
+    .chats-list {
+        padding: 0 12px;
+    }
 }
