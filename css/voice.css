@@ -68,11 +68,15 @@
     border-radius: 50%;
     display: flex;
     transition: all 0.12s ease;
-    box-shadow: 0 2px 8px rgba(59,130,246,0.3);
+    box-shadow: 0 2px 12px rgba(59,130,246,0.4), inset 0 1px 0 rgba(255,255,255,0.2);
 }
 
 .voice-send-btn:active { transform: scale(0.92); }
-.voice-send-btn:hover { background: var(--accent-hover); }
+.voice-send-btn:hover { 
+    background: var(--accent-hover);
+    transform: scale(1.05);
+    box-shadow: 0 4px 20px rgba(59,130,246,0.6), inset 0 1px 0 rgba(255,255,255,0.2);
+}
 .voice-send-btn svg { width: 20px; height: 20px; }
 
 .message.voice-message .message-bubble {
@@ -106,10 +110,14 @@
     justify-content: center;
     flex-shrink: 0;
     transition: all 0.12s ease;
-    box-shadow: 0 2px 6px rgba(59,130,246,0.3);
+    box-shadow: 0 2px 10px rgba(59,130,246,0.4), inset 0 1px 0 rgba(255,255,255,0.2);
 }
 
-.voice-play-btn:hover { transform: scale(1.05); background: var(--accent-hover); }
+.voice-play-btn:hover { 
+    transform: scale(1.1); 
+    background: var(--accent-hover);
+    box-shadow: 0 4px 16px rgba(59,130,246,0.6), inset 0 1px 0 rgba(255,255,255,0.2);
+}
 .voice-play-btn:active { transform: scale(0.95); }
 .voice-play-btn svg { width: 14px; height: 14px; }
 

@@ -8,9 +8,9 @@
     -webkit-overflow-scrolling: touch;
     position: relative;
     background:
-        radial-gradient(circle at 50% 50%, rgba(59,130,246,0.025) 0%, transparent 60%),
-        radial-gradient(circle at 20% 80%, rgba(59,130,246,0.015) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(59,130,246,0.01) 0%, transparent 50%);
+        radial-gradient(circle at 50% 30%, rgba(59,130,246,0.04) 0%, transparent 50%),
+        radial-gradient(circle at 20% 80%, rgba(139,92,246,0.03) 0%, transparent 40%),
+        radial-gradient(circle at 80% 20%, rgba(59,130,246,0.02) 0%, transparent 40%);
 }
 
 .messages-container::before {
@@ -82,7 +82,7 @@
 .message-avatar {
     width: 30px;
     height: 30px;
-    border-radius: 8px;
+    border-radius: 50%;
     flex-shrink: 0;
     box-shadow: 0 0 0 1px rgba(255,255,255,0.05);
 }
@@ -132,14 +132,14 @@
     background: var(--message-incoming);
     border: 1px solid var(--message-incoming-border);
     border-bottom-left-radius: 4px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.02);
 }
 
 .message.outgoing .message-bubble {
     background: linear-gradient(135deg, var(--message-outgoing-start), var(--message-outgoing-end));
     border-bottom-right-radius: 4px;
     color: #fff;
-    box-shadow: 0 2px 8px rgba(29,78,216,0.25);
+    box-shadow: 0 4px 12px rgba(29,78,216,0.35), inset 0 1px 0 rgba(255,255,255,0.1);
 }
 
 .message-bubble p {
@@ -215,7 +215,7 @@
 .message-selector.checked {
     background: var(--accent);
     border-color: var(--accent);
-    box-shadow: 0 0 8px var(--accent-glow);
+    box-shadow: 0 0 12px var(--accent-glow);
 }
 
 .message-selector.checked::after {

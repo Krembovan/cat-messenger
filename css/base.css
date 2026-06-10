@@ -115,11 +115,13 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: var(--radius-md);
+    border-radius: 50%;
     font-weight: 600;
     color: white;
     flex-shrink: 0;
     user-select: none;
+    background: linear-gradient(135deg, var(--accent), #8b5cf6);
+    box-shadow: 0 2px 8px rgba(59,130,246,0.3);
 }
 
 .notification {

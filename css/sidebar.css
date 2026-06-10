@@ -1,7 +1,7 @@
 .sidebar {
     width: 100%;
     height: 100%;
-    background: var(--bg-secondary);
+    background: linear-gradient(180deg, var(--bg-secondary) 0%, #0d1019 100%);
     display: flex;
     flex-direction: column;
     position: absolute;
@@ -41,10 +41,11 @@
     font-size: 20px;
     font-weight: 700;
     letter-spacing: -0.3px;
-    background: var(--accent-gradient);
+    background: linear-gradient(135deg, var(--accent), #8b5cf6, var(--accent));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    text-shadow: 0 0 20px rgba(59,130,246,0.3);
 }
 
 .search-box {
@@ -118,11 +119,12 @@
 
 .chat-item:hover {
     background: var(--bg-hover);
+    transform: translateX(2px);
 }
 
 .chat-item.active {
-    background: var(--bg-tertiary);
-    box-shadow: inset 2px 0 0 var(--accent);
+    background: linear-gradient(90deg, var(--bg-tertiary), transparent);
+    box-shadow: inset 2px 0 0 var(--accent), 0 2px 8px rgba(59,130,246,0.1);
 }
 
 .chat-item.active::before {
@@ -145,7 +147,7 @@
     width: 48px;
     height: 48px;
     font-size: 16px;
-    border-radius: var(--radius-md);
+    border-radius: 50%;
 }
 
 .status {
@@ -158,8 +160,21 @@
     border: 2px solid var(--bg-secondary);
 }
 
-.status.online { background: var(--online); }
+.status.online { 
+    background: var(--online);
+    animation: pulse 2s infinite;
+}
+
 .status.offline { background: var(--offline); }
+
+@keyframes pulse {
+    0%, 100% { 
+        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+    }
+    50% { 
+        box-shadow: 0 0 0 6px rgba(34, 197, 94, 0);
+    }
+}
 
 .chat-info {
     flex: 1;
