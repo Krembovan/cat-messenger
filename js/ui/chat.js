@@ -58,7 +58,6 @@ export const Chat = {
         ta.style.background = Helpers.nameToColor(chat.name);
         ta.textContent = Helpers.getInitials(chat.name);
         
-        Messages.render();
         Input.clear();
         
         this.show();

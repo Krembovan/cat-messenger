@@ -60,7 +60,6 @@ export const Input = {
         this.elements.voiceBtn.addEventListener('touchstart', (e) => { e.preventDefault(); this.startVoiceRecord(); });
         this.elements.voiceBtn.addEventListener('mouseup', () => this.stopVoiceRecord());
         this.elements.voiceBtn.addEventListener('touchend', () => this.stopVoiceRecord());
-        this.elements.voiceBtn.addEventListener('mouseleave', () => this.stopVoiceRecord());
         
         this.elements.voiceCancelBtn.addEventListener('click', () => this.cancelVoiceRecord());
         this.elements.voiceSendBtn.addEventListener('click', () => this.sendVoiceRecord());
@@ -148,6 +147,7 @@ export const Input = {
     
     startVoiceRecord() {
         this._recording = true;
+        this._stopped = false;
         this.elements.voiceRecorder.classList.add('active', 'recording');
         this.amplitudes = [];
         this.waveBars = Array.from(this.elements.voiceWave.children);
@@ -209,6 +209,8 @@ export const Input = {
     },
     
     stopVoiceRecord() {
+        if (this._stopped) return;
+        this._stopped = true;
         this._recording = false;
         State.stopRecording();
         this._cleanupAudio();
@@ -217,6 +219,7 @@ export const Input = {
     },
     
     cancelVoiceRecord() {
+        this._stopped = true;
         this._recording = false;
         this._cleanupAudio();
         this.elements.voiceTimer.textContent = '0:00';

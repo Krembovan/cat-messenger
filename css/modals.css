@@ -117,15 +117,3 @@
 .edit-label {
     color: #f59e0b !important;
 }
-
-.select-mode-header {
-    display: none !important;
-}
-
-.select-mode-active .select-mode-header {
-    display: flex !important;
-}
-
-.select-mode-active .normal-mode-header {
-    display: none !important;
-}

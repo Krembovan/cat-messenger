@@ -81,6 +81,10 @@ export const Messages = {
             clearTimeout(longPressTimer);
         });
         
+        this.elements.container.addEventListener('touchmove', () => {
+            clearTimeout(longPressTimer);
+        });
+        
         document.addEventListener('click', (e) => {
             if (!this.elements.reactionPicker.contains(e.target)) {
                 this.elements.reactionPicker.classList.remove('active');
@@ -163,7 +167,7 @@ export const Messages = {
             bubbleHtml = `<div class="message-bubble">
                 <div class="message-file">
                     <span class="message-file-icon">📎</span>
-                    <div><strong>${Helpers.escapeHtml(msg.file.name)}</strong><br><small>${msg.file.size ? (msg.file.size < 1024 ? msg.file.size + ' B' : (msg.file.size / 1024).toFixed(1) + ' KB') : ''}</small></div>
+                    <div><strong>${Helpers.escapeHtml(msg.file.name)}</strong><br><small>${msg.file.size ? Helpers.formatFileSize(msg.file.size) : ''}</small></div>
                 </div>
                 ${metaHtml}
             </div>`;
