@@ -174,7 +174,7 @@ export const Modals = {
                     reader.readAsDataURL(file);
                 } else {
                     API.addMessage(State.currentChat, {
-                        text: `📎 ${file.name}`,
+                        text: file.name,
                         incoming: false,
                         type: 'file',
                         file: { name: file.name, size: file.size, type: file.type }

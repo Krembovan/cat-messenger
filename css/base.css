@@ -108,7 +108,18 @@ body {
 
 .message-image { max-width: 260px; border-radius: var(--radius-md); cursor: pointer; }
 .message-file { display: flex; align-items: center; gap: 10px; padding: 4px 0; }
-.message-file-icon { font-size: 24px; }
+.message-file-icon { 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    color: var(--accent);
+}
+.message-file-icon svg {
+    width: 20px;
+    height: 20px;
+}
 .message-input-container.hidden { display: none; }
 
 .avatar-initial {

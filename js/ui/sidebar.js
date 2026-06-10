@@ -57,9 +57,9 @@ export const Sidebar = {
     renderChatItem(chat) {
         const lastMsg = chat.messages[chat.messages.length - 1];
         const preview = lastMsg
-            ? (lastMsg.type === 'voice' ? '🎤 Голосовое' :
-               lastMsg.type === 'image' ? '📷 Фото' :
-               lastMsg.type === 'file' ? `📎 ${lastMsg.file?.name || 'Файл'}` :
+            ? (lastMsg.type === 'voice' ? 'Голосовое сообщение' :
+               lastMsg.type === 'image' ? 'Фото' :
+               lastMsg.type === 'file' ? (lastMsg.file?.name || 'Файл') :
                (lastMsg.incoming ? '' : 'Вы: ') + lastMsg.text)
             : 'Нет сообщений';
         const time = lastMsg ? lastMsg.time : '';
@@ -76,9 +76,9 @@ export const Sidebar = {
                         <span class="chat-name">${chat.name}</span>
                         <span class="chat-time">${time}</span>
                     </div>
-                    <p class="chat-preview">${chat.muted ? '🔇 ' : ''}${Helpers.escapeHtml(preview)}</p>
+                    <p class="chat-preview">${Helpers.escapeHtml(preview)}</p>
                 </div>
-                ${chat.pinned ? '<span class="pin-icon">📌</span>' : ''}
+                ${chat.pinned ? '<span class="pin-icon"></span>' : ''}
             </div>
         `;
     },

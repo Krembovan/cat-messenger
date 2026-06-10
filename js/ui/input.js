@@ -240,7 +240,7 @@ export const Input = {
         this.amplitudes = [];
         
         API.addMessage(State.currentChat, {
-            text: '🎤 Голосовое сообщение',
+            text: 'Голосовое сообщение',
             incoming: false,
             type: 'voice',
             voiceDuration: duration,

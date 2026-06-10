@@ -75,7 +75,7 @@ export const Profile = {
         this.elements.name.textContent = chat.name;
         this.elements.status.textContent = chat.status;
         this.elements.status.style.color = chat.online ? 'var(--online)' : 'var(--text-muted)';
-        this.elements.muteBtn.querySelector('span').textContent = chat.muted ? '🔈 Вкл. звук' : '🔇 Без звука';
+        this.elements.muteBtn.querySelector('span').textContent = chat.muted ? 'Вкл. звук' : 'Без звука';
         
         this.elements.overlay.classList.add('active');
     },
