@@ -4,6 +4,7 @@ import { Helpers } from '../utils/helpers.js';
 
 export const Modals = {
     init() {
+        this.initHeaderDropdown();
         this.initChatSettings();
         this.initNewChat();
         this.initForward();
@@ -13,53 +14,73 @@ export const Modals = {
         this.initImagePreview();
     },
     
+    initHeaderDropdown() {
+        const dropdown = document.getElementById('headerDropdown');
+        const moreBtn = document.getElementById('chatMoreBtn');
+        if (!dropdown || !moreBtn) return;
+        
+        moreBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            dropdown.classList.toggle('show');
+            const chat = API.getChat(State.currentChat);
+            if (chat) {
+                const pinItem = dropdown.querySelector('[data-action="pin"] span:last-child');
+                const muteItem = dropdown.querySelector('[data-action="mute"] span:last-child');
+                if (pinItem) pinItem.textContent = chat.pinned ? 'Открепить чат' : 'Закрепить чат';
+                if (muteItem) muteItem.textContent = chat.muted ? 'Включить уведомления' : 'Выключить уведомления';
+            }
+        });
+        
+        document.addEventListener('click', (e) => {
+            if (dropdown.classList.contains('show') && !dropdown.contains(e.target) && e.target !== moreBtn) {
+                dropdown.classList.remove('show');
+            }
+        });
+        
+        dropdown.querySelectorAll('.dropdown-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const action = item.dataset.action;
+                dropdown.classList.remove('show');
+                
+                if (action === 'pin') API.togglePin(State.currentChat);
+                else if (action === 'mute') API.toggleMute(State.currentChat);
+                else if (action === 'wallpaper') this.showWallpaperPicker();
+                else if (action === 'select') State.toggleSelectMode();
+                else if (action === 'clear') {
+                    if (confirm('Очистить историю чата?')) API.clearHistory(State.currentChat);
+                }
+                else if (action === 'delete') {
+                    if (confirm('Удалить чат безвозвратно?')) {
+                        const chatId = State.currentChat;
+                        API.deleteChat(chatId);
+                        State.setCurrentChat(Object.keys(State.chats)[0] || null);
+                    }
+                }
+            });
+        });
+    },
+    
     initChatSettings() {
         const overlay = document.getElementById('chatSettingsOverlay');
         const close = document.getElementById('settingsCloseBtn');
-        const moreBtn = document.getElementById('chatMoreBtn');
         const pinBtn = document.getElementById('settingsPinBtn');
         const muteBtn = document.getElementById('settingsMuteBtn');
-        const archiveBtn = document.getElementById('settingsArchiveBtn');
         const wallpaperBtn = document.getElementById('settingsWallpaperBtn');
         const clearBtn = document.getElementById('settingsClearBtn');
         const deleteBtn = document.getElementById('settingsDeleteBtn');
         
-        moreBtn.addEventListener('click', () => overlay.classList.add('active'));
-        close.addEventListener('click', () => overlay.classList.remove('active'));
-        overlay.addEventListener('click', (e) => {
+        if (close) close.addEventListener('click', () => overlay.classList.remove('active'));
+        if (overlay) overlay.addEventListener('click', (e) => {
             if (e.target === overlay) overlay.classList.remove('active');
         });
         
-        pinBtn.addEventListener('click', () => {
-            API.togglePin(State.currentChat);
-            overlay.classList.remove('active');
+        if (pinBtn) pinBtn.addEventListener('click', () => { API.togglePin(State.currentChat); overlay.classList.remove('active'); });
+        if (muteBtn) muteBtn.addEventListener('click', () => { API.toggleMute(State.currentChat); overlay.classList.remove('active'); });
+        if (wallpaperBtn) wallpaperBtn.addEventListener('click', () => { overlay.classList.remove('active'); this.showWallpaperPicker(); });
+        if (clearBtn) clearBtn.addEventListener('click', () => {
+            if (confirm('Очистить историю чата?')) { API.clearHistory(State.currentChat); overlay.classList.remove('active'); }
         });
-        
-        muteBtn.addEventListener('click', () => {
-            API.toggleMute(State.currentChat);
-            overlay.classList.remove('active');
-        });
-        
-        archiveBtn.addEventListener('click', () => {
-            API.toggleArchive(State.currentChat);
-            overlay.classList.remove('active');
-            const chat = API.getChat(State.currentChat);
-            Helpers.showToast(chat.archived ? 'Чат архивирован' : 'Чат разархивирован');
-        });
-        
-        wallpaperBtn.addEventListener('click', () => {
-            overlay.classList.remove('active');
-            this.showWallpaperPicker();
-        });
-        
-        clearBtn.addEventListener('click', () => {
-            if (confirm('Очистить историю чата?')) {
-                API.clearHistory(State.currentChat);
-                overlay.classList.remove('active');
-            }
-        });
-        
-        deleteBtn.addEventListener('click', () => {
+        if (deleteBtn) deleteBtn.addEventListener('click', () => {
             if (confirm('Удалить чат безвозвратно?')) {
                 const chatId = State.currentChat;
                 API.deleteChat(chatId);

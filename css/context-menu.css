@@ -1,20 +1,22 @@
 .context-menu {
     display: none;
     position: fixed;
-    background: rgba(15,12,30,0.95);
-    backdrop-filter: var(--backdrop-strong);
-    -webkit-backdrop-filter: var(--backdrop-strong);
-    border-radius: 14px;
-    padding: 6px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: var(--radius-md);
+    padding: 4px;
     min-width: 140px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px var(--border-2), 0 0 40px var(--primary-glow);
+    box-shadow: var(--shadow-lg), 0 0 0 1px var(--glass-border);
     z-index: 151;
-    border: 1px solid var(--border-2);
-    animation: menuScaleIn 0.15s var(--ease);
+    border: none;
+    animation: menuScaleIn 0.12s cubic-bezier(0.16, 1, 0.3, 1);
     transform-origin: top center;
 }
 
-.context-menu.active { display: block; }
+.context-menu.active {
+    display: block;
+}
 
 @keyframes menuScaleIn {
     from { transform: scale(0.92); opacity: 0; }
@@ -24,25 +26,35 @@
 .context-item {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 8px 12px;
-    border-radius: 10px;
+    gap: 8px;
+    padding: 6px 8px;
+    border-radius: 6px;
     cursor: pointer;
-    transition: all 0.15s;
-    font-size: 13px;
-    color: var(--text);
+    transition: all 0.1s ease;
+    font-size: 12px;
+    color: var(--text-primary);
     white-space: nowrap;
 }
 
-.context-item:hover { background: linear-gradient(135deg, rgba(139,92,246,0.2), rgba(34,211,238,0.08)); }
+.context-item:hover {
+    background: var(--bg-hover);
+}
 
 .context-item svg {
-    width: 16px;
-    height: 16px;
+    width: 14px;
+    height: 14px;
     color: var(--text-secondary);
     flex-shrink: 0;
 }
 
-.context-item.danger { color: var(--danger); }
-.context-item.danger:hover { background: linear-gradient(135deg, rgba(251,113,133,0.22), rgba(251,113,133,0.08)); }
-.context-item.danger svg { color: var(--danger); }
+.context-item.danger {
+    color: var(--danger);
+}
+
+.context-item.danger:hover {
+    background: rgba(239,68,68,0.1);
+}
+
+.context-item.danger svg {
+    color: var(--danger);
+}
