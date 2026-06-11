@@ -1,6 +1,7 @@
 import { State } from '../state.js';
 import { API } from '../api.js';
 import { Helpers } from '../utils/helpers.js';
+import { Chat } from './chat.js';
 
 export const Sidebar = {
     elements: {},
@@ -31,6 +32,13 @@ export const Sidebar = {
         this.elements.searchInput.addEventListener('input',
             Helpers.debounce((e) => this.handleSearch(e.target.value), 300)
         );
+        
+        document.getElementById('hamburgerBtn')?.addEventListener('click', () => {
+            if (State.currentChat) {
+                document.getElementById('chatMain').classList.add('active');
+                document.getElementById('sidebar').classList.add('hidden');
+            }
+        });
         
         this.initResize();
         
