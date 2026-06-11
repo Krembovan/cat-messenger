@@ -18,6 +18,7 @@ export const State = {
     theme: 'dark',
     accentColor: '#3b82f6',
     fontSize: 'medium',
+    compactMode: false,
     
     listeners: [],
     
@@ -154,6 +155,12 @@ export const State = {
         this.notify('themeChanged', theme);
     },
     
+    setCompactMode(enabled) {
+        this.compactMode = enabled;
+        localStorage.setItem('cat_compact', enabled);
+        this.notify('compactModeChanged', enabled);
+    },
+
     setAccentColor(color) {
         this.accentColor = color;
         localStorage.setItem('cat_accent', color);
@@ -171,11 +178,13 @@ export const State = {
         const theme = localStorage.getItem('cat_theme');
         const accent = localStorage.getItem('cat_accent');
         const fontsize = localStorage.getItem('cat_fontsize');
+        const compact = localStorage.getItem('cat_compact');
         if (theme) this.theme = theme;
         if (accent) {
             this.accentColor = accent;
             document.documentElement.style.setProperty('--accent', accent);
         }
         if (fontsize) this.fontSize = fontsize;
+        if (compact !== null) this.compactMode = compact === 'true';
     }
 };

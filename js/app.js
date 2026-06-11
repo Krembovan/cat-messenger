@@ -17,6 +17,7 @@ import { ContextMenu } from './ui/context-menu.js';
 import { Swipe } from './ui/swipe.js';
 import { Profile } from './ui/profile.js';
 import { Modals } from './ui/modals.js';
+import { Notifications } from './ui/notifications.js';
 
 const App = {
     init() {
@@ -25,7 +26,7 @@ const App = {
         State.loadPreferences();
         API.load();
         
-        const modules = [Sidebar, Chat, Messages, Input, Emoji, Stickers, Drafts, AdvancedMessages, Themes, GroupChats, MediaGallery, ChatFeatures, Utilities, ContextMenu, Swipe, Profile, Modals];
+        const modules = [Sidebar, Chat, Messages, Input, Emoji, Stickers, Drafts, AdvancedMessages, Themes, GroupChats, MediaGallery, ChatFeatures, Utilities, ContextMenu, Swipe, Profile, Modals, Notifications];
         modules.forEach(m => {
             try { m.init(); } catch (e) { console.error('[CAT] Failed to init module:', e); }
         });
@@ -52,6 +53,23 @@ const App = {
     bindGlobalEvents() {
         State.subscribe((event) => {
             if (event === 'chatClosed') Sidebar.show();
+        });
+        
+        document.addEventListener('click', (e) => {
+            const btn = e.target.closest('.icon-btn, .context-item, .panel-item, .profile-menu-item, .profile-action, .chat-item, .send-btn, .voice-btn');
+            if (btn) {
+                const ripple = document.createElement('span');
+                ripple.className = 'ripple';
+                const rect = btn.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+                ripple.style.width = ripple.style.height = size + 'px';
+                ripple.style.left = x + 'px';
+                ripple.style.top = y + 'px';
+                btn.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 500);
+            }
         });
         
         document.addEventListener('keydown', (e) => {

@@ -17,14 +17,22 @@ export const Sidebar = {
             sidebar: document.getElementById('sidebar'),
             chatsList: document.getElementById('chatsList'),
             searchInput: document.getElementById('searchInput'),
-            chatContextMenu: document.getElementById('chatContextMenu')
+            chatContextMenu: document.getElementById('chatContextMenu'),
+            resizeHandle: document.getElementById('sidebarResizeHandle')
         };
+        
+        const savedWidth = localStorage.getItem('cat_sidebar_width');
+        if (savedWidth && window.innerWidth >= 768) {
+            this.elements.sidebar.style.width = savedWidth + 'px';
+        }
     },
     
     bindEvents() {
         this.elements.searchInput.addEventListener('input',
             Helpers.debounce((e) => this.handleSearch(e.target.value), 300)
         );
+        
+        this.initResize();
         
         document.addEventListener('click', (e) => {
             if (this.elements.chatContextMenu && !this.elements.chatContextMenu.contains(e.target)) {
@@ -222,5 +230,35 @@ export const Sidebar = {
     },
     
     show() { this.elements.sidebar.classList.remove('hidden'); },
-    hide() { this.elements.sidebar.classList.add('hidden'); }
+    hide() { this.elements.sidebar.classList.add('hidden'); },
+
+    initResize() {
+        const handle = this.elements.resizeHandle;
+        if (!handle) return;
+
+        const minWidth = 280;
+        const maxWidth = 500;
+
+        handle.addEventListener('mousedown', (e) => {
+            e.preventDefault();
+            const startX = e.clientX;
+            const startW = this.elements.sidebar.offsetWidth;
+            this.elements.sidebar.classList.add('dragging');
+
+            const onMove = (ev) => {
+                const w = Math.min(maxWidth, Math.max(minWidth, startW + (ev.clientX - startX)));
+                this.elements.sidebar.style.width = w + 'px';
+            };
+
+            const onUp = () => {
+                this.elements.sidebar.classList.remove('dragging');
+                localStorage.setItem('cat_sidebar_width', this.elements.sidebar.offsetWidth);
+                document.removeEventListener('mousemove', onMove);
+                document.removeEventListener('mouseup', onUp);
+            };
+
+            document.addEventListener('mousemove', onMove);
+            document.addEventListener('mouseup', onUp);
+        });
+    }
 };

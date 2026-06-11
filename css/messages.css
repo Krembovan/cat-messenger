@@ -148,6 +148,40 @@
     overflow: hidden;
 }
 
+.message-bubble code {
+    background: rgba(255,255,255,0.08);
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+}
+
+.message-bubble pre {
+    background: rgba(0,0,0,0.3);
+    padding: 10px 12px;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 6px 0;
+    border: 1px solid var(--border);
+}
+
+.message-bubble pre code {
+    background: none;
+    padding: 0;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.message-bubble blockquote {
+    border-left: 3px solid var(--accent);
+    padding: 4px 12px;
+    margin: 4px 0;
+    color: var(--text-secondary);
+    font-style: italic;
+    background: rgba(59,130,246,0.04);
+    border-radius: 0 6px 6px 0;
+}
+
 .message-bubble p:not(:last-child) {
     margin-bottom: 2px;
 }
@@ -339,4 +373,67 @@
 .chat-search-close {
     width: 32px;
     height: 32px;
+}
+
+.floating-date {
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 4px 16px;
+    border-radius: 20px;
+    background: var(--accent);
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 15;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.floating-date.visible {
+    opacity: 1;
+}
+
+.messages-container.compact-mode {
+    gap: 2px;
+    padding: 8px 12px;
+}
+
+.messages-container.compact-mode .message {
+    max-width: 88%;
+}
+
+.messages-container.compact-mode .message-bubble {
+    padding: 6px 10px;
+    border-radius: 10px;
+}
+
+.messages-container.compact-mode .message-bubble p {
+    font-size: 13px;
+}
+
+.messages-container.compact-mode .message-meta {
+    margin-top: 1px;
+}
+
+.messages-container.compact-mode .message-avatar {
+    width: 24px;
+    height: 24px;
+    font-size: 10px !important;
+}
+
+.messages-container.compact-mode .message.grouped {
+    margin-top: -2px;
+}
+
+.messages-container.compact-mode .date-divider {
+    margin: 10px 0 8px;
+}
+
+.messages-container.compact-mode .message-image {
+    max-width: 180px;
 }

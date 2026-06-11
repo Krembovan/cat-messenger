@@ -78,6 +78,8 @@ body {
     align-items: center;
     justify-content: center;
     position: relative;
+    overflow: hidden;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .icon-btn:hover {
@@ -87,6 +89,19 @@ body {
 
 .icon-btn:active {
     transform: scale(0.94);
+}
+
+.ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    pointer-events: none;
+    animation: rippleAnim 0.5s ease-out forwards;
+}
+
+@keyframes rippleAnim {
+    from { transform: scale(0); opacity: 1; }
+    to { transform: scale(4); opacity: 0; }
 }
 
 .icon-btn svg {

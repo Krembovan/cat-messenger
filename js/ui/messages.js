@@ -18,8 +18,12 @@ export const Messages = {
     cacheElements() {
         this.elements = {
             container: document.getElementById('messagesContainer'),
-            reactionPicker: document.getElementById('reactionPicker')
+            reactionPicker: document.getElementById('reactionPicker'),
+            floatingDate: document.getElementById('floatingDate')
         };
+        if (State.compactMode) {
+            this.elements.container.classList.add('compact-mode');
+        }
     },
     
     bindEvents() {
@@ -95,6 +99,7 @@ export const Messages = {
         this.elements.container.addEventListener('scroll', () => {
             this.saveScrollPosition();
             this.updateScrollButton();
+            this.updateFloatingDate();
         });
         
         const scrollBtn = document.getElementById('scrollToBottomBtn');
@@ -105,7 +110,9 @@ export const Messages = {
     
     bindStateEvents() {
         State.subscribe((event, data) => {
-            if (event === 'chatChanged') {
+            if (event === 'compactModeChanged') {
+                this.elements.container.classList.toggle('compact-mode', data);
+            } else if (event === 'chatChanged') {
                 this.shouldScrollToBottom = false;
                 this.render();
                 this.applyWallpaper();
@@ -329,12 +336,15 @@ export const Messages = {
     },
     
     renderReactions(msg) {
+        const chat = State.getCurrentChat();
+        const chatName = chat ? chat.name : 'Собеседник';
         const reactions = Object.entries(msg.reactions || {});
         return `<div class="message-reactions">
             ${reactions.map(([emoji, users]) => {
                 const hasYou = users.includes('you');
-                const count = users.filter(u => u === 'you').length + users.filter(u => u === 'other').length;
-                return `<span class="message-reaction${hasYou ? ' has-you' : ''}" data-emoji="${emoji}">
+                const count = users.length;
+                const tooltip = users.map(u => u === 'you' ? 'Вы' : chatName).join(', ');
+                return `<span class="message-reaction${hasYou ? ' has-you' : ''}" data-emoji="${emoji}" title="${tooltip}">
                     ${emoji}<span class="reaction-count">${count}</span>
                 </span>`;
             }).join('')}
@@ -464,6 +474,33 @@ export const Messages = {
         });
     },
     
+    updateFloatingDate() {
+        const el = this.elements.floatingDate;
+        if (!el) return;
+
+        clearTimeout(this._dateTimeout);
+
+        const dividers = this.elements.container.querySelectorAll('.date-divider');
+        const containerRect = this.elements.container.getBoundingClientRect();
+        let foundText = '';
+
+        for (const div of dividers) {
+            const rect = div.getBoundingClientRect();
+            if (rect.top >= containerRect.top && rect.top <= containerRect.top + containerRect.height * 0.6) {
+                foundText = div.textContent.trim();
+                break;
+            }
+        }
+
+        if (foundText) {
+            el.textContent = foundText;
+            el.classList.add('visible');
+            this._dateTimeout = setTimeout(() => el.classList.remove('visible'), 1500);
+        } else {
+            el.classList.remove('visible');
+        }
+    },
+
     clearSearchHighlights() {
         const messages = this.elements.container.querySelectorAll('.message.search-match');
         messages.forEach(msgEl => {

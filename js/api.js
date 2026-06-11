@@ -408,11 +408,12 @@ export const API = {
     
     formatText(text) {
         let formatted = Helpers.escapeHtml(text);
+        formatted = formatted.replace(/```([\s\S]+?)```/g, '<pre><code>$1</code></pre>');
+        formatted = formatted.replace(/`(.+?)`/g, '<code>$1</code>');
+        formatted = formatted.replace(/^\s*&gt;\s(.+)$/gm, '<blockquote>$1</blockquote>');
         formatted = formatted.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
         formatted = formatted.replace(/\*(.+?)\*/g, '<em>$1</em>');
         formatted = formatted.replace(/~~(.+?)~~/g, '<del>$1</del>');
-        formatted = formatted.replace(/`(.+?)`/g, '<code>$1</code>');
-        formatted = formatted.replace(/```([\s\S]+?)```/g, '<pre><code>$1</code></pre>');
         formatted = formatted.replace(/__(.+?)__/g, '<u>$1</u>');
         formatted = formatted.replace(/https?:\/\/[^\s]+/g, url => 
             `<a href="${url}" target="_blank" rel="noopener">${url}</a>`

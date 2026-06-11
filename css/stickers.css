@@ -57,14 +57,17 @@
 
 .sticker-content {
     flex: 1;
-    overflow-y: auto;
-    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
 .sticker-grid {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     gap: 8px;
+    padding: 12px;
+    overflow-y: auto;
 }
 
 .sticker-item {
@@ -83,10 +86,57 @@
     transform: scale(1.1);
 }
 
+.gif-tab-content {
+    flex: 1;
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.gif-search-box {
+    display: flex;
+    align-items: center;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+}
+
+.gif-search-icon {
+    position: absolute;
+    left: 22px;
+    width: 16px;
+    height: 16px;
+    color: var(--text-muted);
+    pointer-events: none;
+}
+
+.gif-search-input {
+    width: 100%;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 12px 8px 32px;
+    color: var(--text-primary);
+    font-size: 13px;
+    outline: none;
+}
+
+.gif-search-input:focus {
+    border-color: rgba(59, 130, 246, 0.3);
+}
+
+.gif-search-input::placeholder {
+    color: var(--text-muted);
+}
+
 .gif-grid {
+    flex: 1;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 8px;
+    padding: 12px;
+    overflow-y: auto;
+    align-content: start;
 }
 
 .gif-item {
@@ -110,19 +160,27 @@
     object-fit: cover;
 }
 
-.gif-item img[src=""],
-.gif-item img:not([src]) {
-    opacity: 0;
-}
-
-.gif-item .gif-placeholder {
-    position: absolute;
-    inset: 0;
+.gif-loading, .gif-empty {
+    grid-column: 1 / -1;
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 40px 20px;
     color: var(--text-muted);
-    font-size: 12px;
+    font-size: 13px;
+}
+
+.spinner {
+    width: 24px;
+    height: 24px;
+    border: 3px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
 }
 
 .sticker-btn {
