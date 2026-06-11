@@ -1,9 +1,11 @@
 .emoji-picker {
     display: none;
     position: absolute;
-    bottom: 64px;
+    bottom: 74px;
+    left: 12px;
     right: 12px;
-    width: 320px;
+    width: auto;
+    max-width: 360px;
     max-height: 360px;
     background: var(--glass-bg);
     backdrop-filter: blur(24px);
@@ -12,8 +14,9 @@
     border-radius: var(--radius-lg);
     padding: 12px;
     box-shadow: var(--shadow-lg);
-    z-index: 30;
+    z-index: 150;
     animation: emojiSlideUp 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    margin: 0 auto;
 }
 
 .emoji-picker.active {

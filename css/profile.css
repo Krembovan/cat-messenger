@@ -121,14 +121,14 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 12px 14px;
+    padding: 9px 14px;
     background: transparent;
     border: none;
-    border-radius: var(--radius-sm);
+    border-radius: 8px;
     color: var(--text-primary);
     cursor: pointer;
     font-family: inherit;
-    font-size: 14px;
+    font-size: 13px;
     transition: all 0.1s ease;
     width: 100%;
 }
@@ -138,9 +138,10 @@
 }
 
 .profile-menu-item svg {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     color: var(--text-secondary);
+    flex-shrink: 0;
 }
 
 .profile-menu-item.danger {

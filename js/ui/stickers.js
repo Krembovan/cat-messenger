@@ -15,14 +15,14 @@ const STICKERS = [
 ];
 
 const GIFS = [
-    { url: 'https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif', title: 'Thumbs up' },
-    { url: 'https://media.giphy.com/media/l0HlBO7eyXzSZkJri/giphy.gif', title: 'Applause' },
-    { url: 'https://media.giphy.com/media/26gsjCZpPolPr3sBy/giphy.gif', title: 'Hello' },
-    { url: 'https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif', title: 'Love' },
-    { url: 'https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif', title: 'Dance' },
-    { url: 'https://media.giphy.com/media/26u4kr12SkmfEOvmM/giphy.gif', title: 'Party' },
-    { url: 'https://media.giphy.com/media/3o7abB06u9bNzA8lu8/giphy.gif', title: 'Cool' },
-    { url: 'https://media.giphy.com/media/l0HlNQ03J5JxX6lva/giphy.gif', title: 'Wow' }
+    { url: 'https://media2.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif', title: 'Thumbs up' },
+    { url: 'https://media4.giphy.com/media/l0HlBO7eyXzSZkJri/giphy.gif', title: 'Applause' },
+    { url: 'https://media3.giphy.com/media/26gsjCZpPolPr3sBy/giphy.gif', title: 'Hello' },
+    { url: 'https://media0.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif', title: 'Love' },
+    { url: 'https://media1.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif', title: 'Dance' },
+    { url: 'https://media2.giphy.com/media/26u4kr12SkmfEOvmM/giphy.gif', title: 'Party' },
+    { url: 'https://media3.giphy.com/media/3o7abB06u9bNzA8lu8/giphy.gif', title: 'Cool' },
+    { url: 'https://media4.giphy.com/media/l0HlNQ03J5JxX6lva/giphy.gif', title: 'Wow' }
 ];
 
 export const Stickers = {
@@ -107,15 +107,18 @@ export const Stickers = {
     renderGifs() {
         this.elements.gifGrid.innerHTML = GIFS.map(gif =>
             `<div class="gif-item" data-url="${gif.url}">
-                <img src="${gif.url}" alt="${gif.title}" loading="lazy">
+                <span class="gif-placeholder">${gif.title}</span>
+                <img src="${gif.url}" alt="${gif.title}" loading="lazy" 
+                     onerror="this.style.display='none'">
             </div>`
         ).join('');
         
         this.elements.gifGrid.querySelectorAll('.gif-item').forEach(item => {
             item.addEventListener('click', () => {
                 const url = item.dataset.url;
-                Input.insertGif(url);
-                State.closeStickerPicker();
+                if (Input.insertGif(url)) {
+                    State.closeStickerPicker();
+                }
             });
         });
     }

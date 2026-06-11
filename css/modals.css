@@ -46,24 +46,32 @@
 .panel-menu {
     display: flex;
     flex-direction: column;
-    padding: 12px;
-    gap: 4px;
+    padding: 8px;
+    gap: 2px;
 }
 
 .panel-item {
     display: flex;
     align-items: center;
-    padding: 14px 16px;
+    gap: 12px;
+    padding: 10px 12px;
     background: transparent;
     border: none;
-    border-radius: 12px;
+    border-radius: 10px;
     color: var(--text-primary);
     cursor: pointer;
     font-family: inherit;
-    font-size: 15px;
+    font-size: 14px;
     transition: all 0.15s;
     text-align: left;
     width: 100%;
+}
+
+.panel-item svg {
+    width: 18px;
+    height: 18px;
+    color: var(--text-secondary);
+    flex-shrink: 0;
 }
 
 .panel-item:active {
@@ -84,8 +92,8 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 12px;
-    border-radius: 14px;
+    padding: 10px 12px;
+    border-radius: 12px;
     cursor: pointer;
     transition: background 0.15s;
 }

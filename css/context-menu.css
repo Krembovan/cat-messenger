@@ -6,7 +6,7 @@
     -webkit-backdrop-filter: blur(20px);
     border-radius: var(--radius-md);
     padding: 4px;
-    min-width: 160px;
+    min-width: 140px;
     box-shadow: var(--shadow-lg), 0 0 0 1px var(--glass-border);
     z-index: 151;
     border: none;
@@ -27,12 +27,13 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 8px 10px;
-    border-radius: var(--radius-sm);
+    padding: 6px 8px;
+    border-radius: 6px;
     cursor: pointer;
     transition: all 0.1s ease;
     font-size: 12px;
     color: var(--text-primary);
+    white-space: nowrap;
 }
 
 .context-item:hover {
@@ -40,8 +41,8 @@
 }
 
 .context-item svg {
-    width: 16px;
-    height: 16px;
+    width: 14px;
+    height: 14px;
     color: var(--text-secondary);
     flex-shrink: 0;
 }

@@ -10,6 +10,7 @@
     z-index: 20;
     transform: translateX(100%);
     transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: visible;
 }
 
 .chat-main.active {

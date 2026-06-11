@@ -314,12 +314,13 @@ export const Input = {
     },
     
     insertGif(url) {
-        if (!State.currentChat) return;
-        API.addMessage(State.currentChat, {
+        if (!State.currentChat) return false;
+        const msg = API.addMessage(State.currentChat, {
             text: '',
             incoming: false,
             type: 'image',
             file: { name: 'GIF', url: url, type: 'image/gif' }
         });
+        return !!msg;
     }
 };
