@@ -90,6 +90,16 @@ const App = {
             }
         });
         
+        const compactBtn = document.getElementById('compactModeBtn');
+        if (compactBtn) {
+            compactBtn.addEventListener('click', () => {
+                const enabled = !State.compactMode;
+                State.setCompactMode(enabled);
+                compactBtn.style.color = enabled ? 'var(--accent)' : 'var(--text-secondary)';
+            });
+            if (State.compactMode) compactBtn.style.color = 'var(--accent)';
+        }
+        
         const stickerBtn = document.getElementById('stickerBtn');
         if (stickerBtn) {
             stickerBtn.addEventListener('click', (e) => {

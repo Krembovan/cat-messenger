@@ -60,7 +60,8 @@ export const Sidebar = {
                 event === 'chatPinned' || event === 'chatMuted' ||
                 event === 'chatDeleted' || event === 'historyCleared' ||
                 event === 'messagesForwarded' || event === 'chatArchived' ||
-                event === 'chatRead' || event === 'unreadChanged') {
+                event === 'chatRead' || event === 'unreadChanged' ||
+                event === 'customNameChanged' || event === 'customStatusChanged') {
                 this.render();
             } else if (event === 'chatClosed') {
                 this.show();
@@ -118,17 +119,18 @@ export const Sidebar = {
         const time = lastMsg ? lastMsg.time : '';
         const isActive = State.currentChat === chat.id;
         const unreadBadge = chat.unreadCount > 0 ? `<span class="unread-badge">${chat.unreadCount}</span>` : '';
+        const displayName = API.getDisplayName(chat.id);
         
         const pinHtml = chat.pinned ? '<span class="pin-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 9V4h1c.55 0 1-.45 1-1s-.45-1-1-1H7c-.55 0-1 .45-1 1s.45 1 1 1h1v5c0 1.66-1.34 3-3 3v2h5.97v7l1 1 1-1v-7H19v-2c-1.66 0-3-1.34-3-3z"/></svg></span>' : '';
         return `
             <div class="chat-item ${isActive ? 'active' : ''}${chat.muted ? ' muted' : ''}${chat.archived ? ' archived' : ''}" data-chat="${chat.id}">
                 <div class="chat-avatar">
-                    ${Helpers.avatarHtml(chat.name, 48)}
+                    ${Helpers.avatarHtml(displayName || chat.name, 48)}
                     <span class="status ${chat.online ? 'online' : 'offline'}"></span>
                 </div>
                 <div class="chat-info">
                     <div class="chat-header">
-                        <span class="chat-name">${chat.name}${pinHtml}</span>
+                        <span class="chat-name">${displayName}${pinHtml}</span>
                         <span class="chat-time">${time}</span>
                     </div>
                     <p class="chat-preview">${Helpers.escapeHtml(preview)}</p>

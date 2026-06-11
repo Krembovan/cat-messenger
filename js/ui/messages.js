@@ -337,7 +337,7 @@ export const Messages = {
     
     renderReactions(msg) {
         const chat = State.getCurrentChat();
-        const chatName = chat ? chat.name : 'Собеседник';
+        const chatName = chat ? API.getDisplayName(chat.id) : 'Собеседник';
         const reactions = Object.entries(msg.reactions || {});
         return `<div class="message-reactions">
             ${reactions.map(([emoji, users]) => {

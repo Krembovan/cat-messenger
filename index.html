@@ -38,6 +38,11 @@
                     <span class="logo-text">CAT</span>
                 </div>
                 <div class="sidebar-actions">
+                    <button class="icon-btn" id="compactModeBtn" title="Компактный режим">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                            <line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/>
+                        </svg>
+                    </button>
                     <button class="icon-btn" id="createGroupBtn" title="Создать группу">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
@@ -61,7 +66,13 @@
                 </svg>
                 <input type="text" placeholder="Поиск чатов..." class="search-input" id="searchInput">
             </div>
-            <nav class="chats-list" id="chatsList"></nav>
+            <nav class="chats-list" id="chatsList">
+                <div class="skeleton-sidebar-item"><div class="skeleton skeleton-avatar skeleton-circle"></div><div class="skeleton-lines"><div class="skeleton skeleton-line long"></div><div class="skeleton skeleton-line short"></div></div></div>
+                <div class="skeleton-sidebar-item"><div class="skeleton skeleton-avatar skeleton-circle"></div><div class="skeleton-lines"><div class="skeleton skeleton-line long"></div><div class="skeleton skeleton-line short"></div></div></div>
+                <div class="skeleton-sidebar-item"><div class="skeleton skeleton-avatar skeleton-circle"></div><div class="skeleton-lines"><div class="skeleton skeleton-line long"></div><div class="skeleton skeleton-line short"></div></div></div>
+                <div class="skeleton-sidebar-item"><div class="skeleton skeleton-avatar skeleton-circle"></div><div class="skeleton-lines"><div class="skeleton skeleton-line long"></div><div class="skeleton skeleton-line short"></div></div></div>
+                <div class="skeleton-sidebar-item"><div class="skeleton skeleton-avatar skeleton-circle"></div><div class="skeleton-lines"><div class="skeleton skeleton-line long"></div><div class="skeleton skeleton-line short"></div></div></div>
+            </nav>
         </aside>
 
         <main class="chat-main" id="chatMain">
@@ -280,6 +291,10 @@
                 <div class="profile-body">
                     <span class="avatar-initial profile-avatar" id="profileAvatar" style="width:88px;height:88px;font-size:30px;border-radius:22px"></span>
                     <h2 class="profile-name" id="profileName"></h2>
+                    <div class="profile-input-group">
+                        <input type="text" class="profile-input" id="profileNameInput" placeholder="Своё имя для контакта...">
+                        <input type="text" class="profile-input" id="profileStatusInput" placeholder="Свой статус...">
+                    </div>
                     <span class="profile-status" id="profileStatus"></span>
                     <div class="profile-actions">
                         <button class="profile-action" id="profileCallBtn">

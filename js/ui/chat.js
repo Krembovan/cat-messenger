@@ -62,6 +62,9 @@ export const Chat = {
     bindStateEvents() {
         State.subscribe((event, data) => {
             if (event === 'chatChanged') this.openChat(data);
+            else if ((event === 'customNameChanged' || event === 'customStatusChanged') && data.chatId === State.currentChat) {
+                this.openChat(data.chatId);
+            }
         });
     },
     
@@ -69,16 +72,16 @@ export const Chat = {
         const chat = API.getChat(chatId);
         if (!chat) return;
         
-        this.elements.chatName.textContent = chat.name;
+        this.elements.chatName.textContent = API.getDisplayName(chatId);
         const ca = this.elements.chatAvatar;
         ca.style.background = Helpers.nameToColor(chat.name);
-        ca.textContent = Helpers.getInitials(chat.name);
-        this.elements.chatStatus.textContent = chat.status;
+        ca.textContent = Helpers.getInitials(API.getDisplayName(chatId));
+        this.elements.chatStatus.textContent = API.getDisplayStatus(chatId);
         this.elements.chatStatus.style.color = chat.online
             ? 'var(--online)' : 'var(--text-muted)';
         const ta = this.elements.typingAvatar;
         ta.style.background = Helpers.nameToColor(chat.name);
-        ta.textContent = Helpers.getInitials(chat.name);
+        ta.textContent = Helpers.getInitials(API.getDisplayName(chatId));
         
         Input.clear();
         

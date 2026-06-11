@@ -4,7 +4,7 @@ const STORAGE_KEY = 'cat_messenger';
 
 const DEFAULT_CHATS = {
     felix: {
-        id: 'felix', name: 'Алексей', status: 'В сети', online: true, 
+        id: 'felix', name: 'Алексей', customName: '', customStatus: '', status: 'В сети', online: true, 
         pinned: false, muted: false, archived: false, wallpaper: null, unreadCount: 0,
         messages: [
             { id: 1, text: 'Привет! Как дела?', time: '14:20', timestamp: Date.now() - 86400000 * 2, incoming: true, reactions: { '❤️': ['other'] } },
@@ -15,7 +15,7 @@ const DEFAULT_CHATS = {
         ]
     },
     maria: {
-        id: 'maria', name: 'Мария',
+        id: 'maria', name: 'Мария', customName: '', customStatus: '',
         status: 'В сети', online: true, pinned: false, muted: false, 
         archived: false, wallpaper: null, unreadCount: 1,
         messages: [
@@ -24,7 +24,7 @@ const DEFAULT_CHATS = {
         ]
     },
     team: {
-        id: 'team', name: 'Рабочий чат',
+        id: 'team', name: 'Рабочий чат', customName: '', customStatus: '',
         status: '5 участников', online: false, pinned: true, muted: false,
         archived: false, wallpaper: null, unreadCount: 0,
         messages: [
@@ -33,13 +33,13 @@ const DEFAULT_CHATS = {
         ]
     },
     dmitry: {
-        id: 'dmitry', name: 'Дмитрий',
+        id: 'dmitry', name: 'Дмитрий', customName: '', customStatus: '',
         status: 'Был недавно', online: false, pinned: false, muted: false,
         archived: false, wallpaper: null, unreadCount: 0,
         messages: [{ id: 1, text: 'Спасибо за помощь!', time: '10:30', timestamp: Date.now() - 259200000, incoming: true, reactions: {} }]
     },
     anna: {
-        id: 'anna', name: 'Анна',
+        id: 'anna', name: 'Анна', customName: '', customStatus: '',
         status: 'В сети', online: true, pinned: false, muted: false,
         archived: false, wallpaper: null, unreadCount: 2,
         messages: [
@@ -48,7 +48,7 @@ const DEFAULT_CHATS = {
         ]
     },
     peter: {
-        id: 'peter', name: 'Пётр',
+        id: 'peter', name: 'Пётр', customName: '', customStatus: '',
         status: 'Был давно', online: false, pinned: false, muted: false,
         archived: false, wallpaper: null, unreadCount: 0,
         messages: [{ id: 1, text: 'Фото от 8 марта 📷', time: '14:20', timestamp: Date.now() - 604800000, incoming: true, reactions: {} }]
@@ -68,6 +68,8 @@ export const API = {
             if (chat.archived === undefined) chat.archived = false;
             if (chat.wallpaper === undefined) chat.wallpaper = null;
             if (chat.unreadCount === undefined) chat.unreadCount = 0;
+            if (chat.customName === undefined) chat.customName = '';
+            if (chat.customStatus === undefined) chat.customStatus = '';
             
             chat.messages.forEach(msg => {
                 if (typeof msg.id !== 'string') msg.id = String(msg.id);
@@ -406,6 +408,34 @@ export const API = {
         return { total, sent, received, media, files };
     },
     
+    setCustomName(chatId, customName) {
+        const chat = State.chats[chatId];
+        if (!chat) return;
+        chat.customName = customName.trim();
+        this.save();
+        State.notify('customNameChanged', { chatId, name: chat.customName });
+    },
+    
+    setCustomStatus(chatId, customStatus) {
+        const chat = State.chats[chatId];
+        if (!chat) return;
+        chat.customStatus = customStatus.trim();
+        this.save();
+        State.notify('customStatusChanged', { chatId, status: chat.customStatus });
+    },
+
+    getDisplayName(chatId) {
+        const chat = State.chats[chatId];
+        if (!chat) return '';
+        return chat.customName || chat.name;
+    },
+
+    getDisplayStatus(chatId) {
+        const chat = State.chats[chatId];
+        if (!chat) return '';
+        return chat.customStatus || chat.status;
+    },
+
     formatText(text) {
         let formatted = Helpers.escapeHtml(text);
         formatted = formatted.replace(/```([\s\S]+?)```/g, '<pre><code>$1</code></pre>');

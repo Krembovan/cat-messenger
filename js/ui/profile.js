@@ -23,7 +23,9 @@ export const Profile = {
             mediaBtn: document.getElementById('profileMediaBtn'),
             filesBtn: document.getElementById('profileFilesBtn'),
             muteBtn: document.getElementById('profileMuteBtn'),
-            clearBtn: document.getElementById('profileClearBtn')
+            clearBtn: document.getElementById('profileClearBtn'),
+            nameInput: document.getElementById('profileNameInput'),
+            statusInput: document.getElementById('profileStatusInput')
         };
     },
     
@@ -35,7 +37,7 @@ export const Profile = {
         
         this.elements.muteBtn.addEventListener('click', () => {
             API.toggleMute(State.currentChat);
-            this.hide();
+            this.show(State.currentChat);
         });
         
         this.elements.clearBtn.addEventListener('click', () => {
@@ -45,36 +47,35 @@ export const Profile = {
             }
         });
         
-        this.elements.callBtn.addEventListener('click', () => {
-            alert('Голосовой вызов не доступен в этой версии');
+        this.elements.nameInput.addEventListener('change', () => {
+            API.setCustomName(State.currentChat, this.elements.nameInput.value);
         });
         
-        this.elements.videoBtn.addEventListener('click', () => {
-            alert('Видеозвонок не доступен в этой версии');
+        this.elements.statusInput.addEventListener('change', () => {
+            API.setCustomStatus(State.currentChat, this.elements.statusInput.value);
         });
         
-        this.elements.mediaBtn.addEventListener('click', () => {
-            alert('Медиа не доступно в этой версии');
-        });
-        
-        this.elements.filesBtn.addEventListener('click', () => {
-            alert('Файлы не доступны в этой версии');
-        });
-        
-        this.elements.searchBtn.addEventListener('click', () => {
-            alert('Поиск в чате в разработке');
-        });
+        this.elements.callBtn.addEventListener('click', () => Helpers.showToast('Звонок не доступен'));
+        this.elements.videoBtn.addEventListener('click', () => Helpers.showToast('Видео не доступно'));
+        this.elements.mediaBtn.addEventListener('click', () => Helpers.showToast('Медиа не доступно'));
+        this.elements.filesBtn.addEventListener('click', () => Helpers.showToast('Файлы не доступны'));
+        this.elements.searchBtn.addEventListener('click', () => Helpers.showToast('Поиск в разработке'));
     },
     
     show(chatId) {
         const chat = API.getChat(chatId);
         if (!chat) return;
         
+        const displayName = API.getDisplayName(chatId);
+        const displayStatus = API.getDisplayStatus(chatId);
+        
         this.elements.avatar.style.background = Helpers.nameToColor(chat.name);
-        this.elements.avatar.textContent = Helpers.getInitials(chat.name);
+        this.elements.avatar.textContent = Helpers.getInitials(displayName);
         this.elements.name.textContent = chat.name;
-        this.elements.status.textContent = chat.status;
+        this.elements.nameInput.value = chat.customName || '';
+        this.elements.status.textContent = displayStatus;
         this.elements.status.style.color = chat.online ? 'var(--online)' : 'var(--text-muted)';
+        this.elements.statusInput.value = chat.customStatus || '';
         this.elements.muteBtn.querySelector('span').textContent = chat.muted ? 'Вкл. звук' : 'Без звука';
         
         this.elements.overlay.classList.add('active');
