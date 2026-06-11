@@ -228,3 +228,98 @@
     justify-content: flex-end;
     gap: 8px;
 }
+
+.mention-suggestions, .hashtag-suggestions {
+    position: fixed;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+    display: none;
+}
+
+.mention-item, .hashtag-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.mention-item:hover, .hashtag-item:hover {
+    background: var(--surface-hover);
+}
+
+.poll-message {
+    padding: 12px;
+    background: var(--surface);
+    border-radius: 12px;
+}
+
+.poll-question {
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.poll-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    margin: 4px 0;
+    background: var(--bg-primary);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.poll-option:hover {
+    background: var(--surface-hover);
+}
+
+.poll-option.voted {
+    background: var(--accent-dim);
+    border: 1px solid var(--accent);
+}
+
+.poll-votes {
+    margin-left: auto;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.secret-chat-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+
+.secret-chat-modal {
+    background: var(--surface);
+    padding: 24px;
+    border-radius: 16px;
+    max-width: 400px;
+}
+
+.secret-chat-modal h3 {
+    margin: 0 0 16px 0;
+}
+
+.secret-chat-modal input {
+    width: 100%;
+    padding: 12px;
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+}
+
