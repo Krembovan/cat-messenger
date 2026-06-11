@@ -12,6 +12,7 @@ import { Themes } from './ui/themes.js';
 import { GroupChats } from './ui/group-chats.js';
 import { MediaGallery } from './ui/media-gallery.js';
 import { ChatFeatures } from './ui/chat-features.js';
+import { Utilities } from './ui/utilities.js';
 import { ContextMenu } from './ui/context-menu.js';
 import { Swipe } from './ui/swipe.js';
 import { Profile } from './ui/profile.js';
@@ -24,7 +25,7 @@ const App = {
         State.loadPreferences();
         API.load();
         
-        const modules = [Sidebar, Chat, Messages, Input, Emoji, Stickers, Drafts, AdvancedMessages, Themes, GroupChats, MediaGallery, ChatFeatures, ContextMenu, Swipe, Profile, Modals];
+        const modules = [Sidebar, Chat, Messages, Input, Emoji, Stickers, Drafts, AdvancedMessages, Themes, GroupChats, MediaGallery, ChatFeatures, Utilities, ContextMenu, Swipe, Profile, Modals];
         modules.forEach(m => {
             try { m.init(); } catch (e) { console.error('[CAT] Failed to init module:', e); }
         });

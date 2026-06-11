@@ -323,3 +323,121 @@
     margin-bottom: 16px;
 }
 
+.global-search-input {
+    width: 100%;
+    padding: 12px;
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-size: 14px;
+    margin-bottom: 16px;
+}
+
+.global-search-results {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.search-result-item {
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-bottom: 8px;
+}
+
+.search-result-item:hover {
+    background: var(--surface-hover);
+}
+
+.search-result-chat {
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+.search-result-text {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+}
+
+.search-result-time {
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+.settings-section {
+    margin-bottom: 24px;
+}
+
+.settings-section h4 {
+    margin: 0 0 12px 0;
+    font-size: 14px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.theme-selector, .color-selector {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.theme-btn {
+    padding: 8px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.theme-btn:hover {
+    background: var(--surface-hover);
+    border-color: var(--accent);
+}
+
+.color-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.color-btn:hover {
+    transform: scale(1.1);
+    border-color: white;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 16px;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 16px;
+    background: var(--surface);
+    border-radius: 12px;
+}
+
+.stat-value {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 4px;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+
