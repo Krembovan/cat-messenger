@@ -110,6 +110,13 @@
     border-radius: 2px;
 }
 
+.chat-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 4px 12px;
+    flex-shrink: 0;
+}
+
 .chat-item {
     display: flex;
     align-items: center;

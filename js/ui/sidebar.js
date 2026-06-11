@@ -67,9 +67,15 @@ export const Sidebar = {
             </button>
         ` : '';
         
-        this.elements.chatsList.innerHTML = archiveBtnHtml + filteredChats
-            .map(chat => this.renderChatItem(chat))
-            .join('');
+        const pinnedChats = filteredChats.filter(c => c.pinned);
+        const normalChats = filteredChats.filter(c => !c.pinned);
+        const dividerHtml = pinnedChats.length > 0 && normalChats.length > 0
+            ? '<div class="chat-divider"></div>' : '';
+        
+        this.elements.chatsList.innerHTML = archiveBtnHtml
+            + pinnedChats.map(chat => this.renderChatItem(chat)).join('')
+            + dividerHtml
+            + normalChats.map(chat => this.renderChatItem(chat)).join('');
         
         this.bindChatEvents();
     },
