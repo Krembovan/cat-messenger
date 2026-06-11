@@ -18,11 +18,16 @@
 }
 
 .sidebar-header {
-    padding: calc(16px + var(--safe-top)) 16px 16px;
+    padding: 16px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid var(--glass-border);
+    border-bottom: 1px solid var(--border);
+}
+
+.sidebar-actions {
+    display: flex;
+    gap: 8px;
 }
 
 .logo {

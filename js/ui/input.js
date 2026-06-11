@@ -1,6 +1,7 @@
 import { State } from '../state.js';
 import { API } from '../api.js';
 import { Chat } from './chat.js';
+import { Drafts } from './drafts.js';
 
 export const Input = {
     elements: {},
@@ -38,6 +39,9 @@ export const Input = {
         this.elements.input.addEventListener('input', () => {
             this.autoResize();
             this.toggleMode();
+            if (State.currentChat) {
+                Drafts.setDraft(State.currentChat, this.elements.input.value);
+            }
         });
         
         this.elements.input.addEventListener('keydown', (e) => {
@@ -107,6 +111,7 @@ export const Input = {
             this.simulateReply();
         }
         
+        Drafts.setDraft(State.currentChat, '');
         this.clear();
     },
     
