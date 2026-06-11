@@ -227,8 +227,8 @@ export const Messages = {
         const replyHtml = msg.replyTo ? this.renderReply(msg.replyTo, chat) : '';
         const editedHtml = msg.edited ? ' <span class="edited-mark">изм.</span>' : '';
         const forwardedHtml = msg.forwarded ? ' <span class="forwarded-mark">↗ Переслано</span>' : '';
-        const pinnedHtml = msg.pinned ? ' <span class="pinned-mark">📌</span>' : '';
-        const bookmarkedHtml = msg.bookmarked ? ' <span class="bookmarked-mark">🔖</span>' : '';
+        const pinnedHtml = msg.pinned ? ' <span class="pinned-mark"><svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12"><path d="M16 9V4h1c.55 0 1-.45 1-1s-.45-1-1-1H7c-.55 0-1 .45-1 1s.45 1 1 1h1v5c0 1.66-1.34 3-3 3v2h5.97v7l1 1 1-1v-7H19v-2c-1.66 0-3-1.34-3-3z"/></svg></span>' : '';
+        const bookmarkedHtml = msg.bookmarked ? ' <span class="bookmarked-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></span>' : '';
         
         const metaHtml = `<div class="message-meta">
             <span class="message-time">${msg.time}</span>

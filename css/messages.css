@@ -246,9 +246,13 @@
 }
 
 .pinned-mark, .bookmarked-mark {
-    font-size: 12px;
+    display: inline-flex;
+    vertical-align: middle;
     margin-left: 4px;
 }
+
+.pinned-mark { color: var(--accent); opacity: 0.6; }
+.bookmarked-mark { color: #f59e0b; opacity: 0.7; }
 
 .message.pinned {
     background: rgba(59, 130, 246, 0.05);
