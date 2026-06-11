@@ -16,7 +16,8 @@ export const Sidebar = {
         this.elements = {
             sidebar: document.getElementById('sidebar'),
             chatsList: document.getElementById('chatsList'),
-            searchInput: document.getElementById('searchInput')
+            searchInput: document.getElementById('searchInput'),
+            chatContextMenu: document.getElementById('chatContextMenu')
         };
     },
     
@@ -24,6 +25,24 @@ export const Sidebar = {
         this.elements.searchInput.addEventListener('input',
             Helpers.debounce((e) => this.handleSearch(e.target.value), 300)
         );
+        
+        document.addEventListener('click', (e) => {
+            if (this.elements.chatContextMenu && !this.elements.chatContextMenu.contains(e.target)) {
+                this.hideChatContextMenu();
+            }
+        });
+        
+        if (this.elements.chatContextMenu) {
+            this.elements.chatContextMenu.addEventListener('click', (e) => {
+                const item = e.target.closest('.context-item');
+                if (!item) return;
+                const chatId = this.elements.chatContextMenu._chatId;
+                if (!chatId) return;
+                const action = item.dataset.action;
+                this.handleChatContextAction(action, chatId);
+                this.hideChatContextMenu();
+            });
+        }
     },
     
     bindStateEvents() {
@@ -118,6 +137,10 @@ export const Sidebar = {
                 API.markAsRead(chatId);
                 State.setCurrentChat(chatId);
             });
+            item.addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+                this.showChatContextMenu(e, item.dataset.chat);
+            });
         });
         
         const archiveBtn = document.getElementById('archiveToggleBtn');
@@ -125,6 +148,71 @@ export const Sidebar = {
             archiveBtn.addEventListener('click', () => {
                 State.toggleArchivedView();
             });
+        }
+    },
+    
+    showChatContextMenu(e, chatId) {
+        const chat = API.getChat(chatId);
+        if (!chat) return;
+        
+        const menu = this.elements.chatContextMenu;
+        if (!menu) return;
+        
+        menu.querySelectorAll('.context-item').forEach(item => {
+            const action = item.dataset.action;
+            if (action === 'pin') {
+                const span = item.querySelector('span:last-child');
+                span.textContent = chat.pinned ? 'Открепить' : 'Закрепить';
+            } else if (action === 'mute') {
+                const span = item.querySelector('span:last-child');
+                span.textContent = chat.muted ? 'Вкл. звук' : 'Без звука';
+            }
+        });
+        
+        const rect = menu.getBoundingClientRect();
+        const mw = menu.offsetWidth || 160;
+        const mh = menu.offsetHeight || 180;
+        const left = Math.max(8, Math.min(e.clientX, window.innerWidth - mw - 8));
+        const top = Math.max(8, Math.min(e.clientY, window.innerHeight - mh - 8));
+        
+        menu.style.left = left + 'px';
+        menu.style.top = top + 'px';
+        menu.classList.add('active');
+        menu._chatId = chatId;
+    },
+    
+    hideChatContextMenu() {
+        const menu = this.elements.chatContextMenu;
+        if (menu) {
+            menu.classList.remove('active');
+            delete menu._chatId;
+        }
+    },
+    
+    handleChatContextAction(action, chatId) {
+        switch(action) {
+            case 'pin':
+                API.togglePin(chatId);
+                Helpers.showToast(API.getChat(chatId).pinned ? 'Чат закреплён' : 'Чат откреплён');
+                break;
+            case 'mute':
+                API.toggleMute(chatId);
+                Helpers.showToast(API.getChat(chatId).muted ? 'Уведомления выключены' : 'Уведомления включены');
+                break;
+            case 'archive':
+                API.toggleArchive(chatId);
+                Helpers.showToast(API.getChat(chatId).archived ? 'Чат архивирован' : 'Чат разархивирован');
+                break;
+            case 'delete':
+                if (confirm('Удалить чат безвозвратно?')) {
+                    const wasCurrent = State.currentChat === chatId;
+                    API.deleteChat(chatId);
+                    if (wasCurrent) {
+                        const chats = Object.keys(State.chats);
+                        State.setCurrentChat(chats[0] || null);
+                    }
+                }
+                break;
         }
     },
     
