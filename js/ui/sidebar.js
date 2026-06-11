@@ -1,7 +1,6 @@
 import { State } from '../state.js';
 import { API } from '../api.js';
 import { Helpers } from '../utils/helpers.js';
-import { Chat } from './chat.js';
 
 export const Sidebar = {
     elements: {},
