@@ -124,3 +124,41 @@
 .edit-label {
     color: #f59e0b !important;
 }
+
+.wallpaper-picker h3 {
+    margin: 0 0 16px 0;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.wallpaper-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    padding: 8px 0;
+}
+
+.wallpaper-option {
+    aspect-ratio: 1;
+    border-radius: 12px;
+    cursor: pointer;
+    border: 2px solid var(--border);
+    transition: all 0.2s ease;
+    background: var(--bg-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: var(--text-secondary);
+    text-align: center;
+    padding: 8px;
+}
+
+.wallpaper-option:hover {
+    border-color: var(--accent);
+    transform: scale(1.05);
+}
+
+.wallpaper-option.default {
+    background: var(--surface);
+}

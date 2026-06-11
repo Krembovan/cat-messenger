@@ -32,10 +32,13 @@ export const Sidebar = {
                 event === 'messageDeleted' || event === 'messagesDeleted' ||
                 event === 'chatPinned' || event === 'chatMuted' ||
                 event === 'chatDeleted' || event === 'historyCleared' ||
-                event === 'messagesForwarded') {
+                event === 'messagesForwarded' || event === 'chatArchived' ||
+                event === 'chatRead' || event === 'unreadChanged') {
                 this.render();
             } else if (event === 'chatClosed') {
                 this.show();
+            } else if (event === 'archivedViewToggled') {
+                this.render();
             }
         });
     },
@@ -46,8 +49,25 @@ export const Sidebar = {
             ? API.searchChats(this.currentSearch)
             : null;
         
-        this.elements.chatsList.innerHTML = chats
-            .filter(chat => !matchedIds || matchedIds.includes(chat.id))
+        const filteredChats = chats.filter(chat => {
+            const matchesSearch = !matchedIds || matchedIds.includes(chat.id);
+            const matchesArchive = State.showArchived ? chat.archived : !chat.archived;
+            return matchesSearch && matchesArchive;
+        });
+        
+        const archivedCount = chats.filter(c => c.archived).length;
+        const archiveBtnHtml = archivedCount > 0 ? `
+            <button class="archive-toggle-btn" id="archiveToggleBtn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="21 8 21 21 3 21 3 8"/>
+                    <rect x="1" y="3" width="22" height="5"/>
+                    <line x1="10" y1="12" x2="14" y2="12"/>
+                </svg>
+                <span>${State.showArchived ? 'Все чаты' : 'Архив'} (${archivedCount})</span>
+            </button>
+        ` : '';
+        
+        this.elements.chatsList.innerHTML = archiveBtnHtml + filteredChats
             .map(chat => this.renderChatItem(chat))
             .join('');
         
@@ -64,9 +84,10 @@ export const Sidebar = {
             : 'Нет сообщений';
         const time = lastMsg ? lastMsg.time : '';
         const isActive = State.currentChat === chat.id;
+        const unreadBadge = chat.unreadCount > 0 ? `<span class="unread-badge">${chat.unreadCount}</span>` : '';
         
         return `
-            <div class="chat-item ${isActive ? 'active' : ''}${chat.muted ? ' muted' : ''}" data-chat="${chat.id}">
+            <div class="chat-item ${isActive ? 'active' : ''}${chat.muted ? ' muted' : ''}${chat.archived ? ' archived' : ''}" data-chat="${chat.id}">
                 <div class="chat-avatar">
                     ${Helpers.avatarHtml(chat.name, 48)}
                     <span class="status ${chat.online ? 'online' : 'offline'}"></span>
@@ -78,6 +99,7 @@ export const Sidebar = {
                     </div>
                     <p class="chat-preview">${Helpers.escapeHtml(preview)}</p>
                 </div>
+                ${unreadBadge}
                 ${chat.pinned ? '<span class="pin-icon"></span>' : ''}
             </div>
         `;
@@ -86,9 +108,18 @@ export const Sidebar = {
     bindChatEvents() {
         this.elements.chatsList.querySelectorAll('.chat-item').forEach(item => {
             item.addEventListener('click', () => {
-                State.setCurrentChat(item.dataset.chat);
+                const chatId = item.dataset.chat;
+                API.markAsRead(chatId);
+                State.setCurrentChat(chatId);
             });
         });
+        
+        const archiveBtn = document.getElementById('archiveToggleBtn');
+        if (archiveBtn) {
+            archiveBtn.addEventListener('click', () => {
+                State.toggleArchivedView();
+            });
+        }
     },
     
     handleSearch(query) {

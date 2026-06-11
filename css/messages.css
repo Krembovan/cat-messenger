@@ -225,3 +225,114 @@
     background: white;
     border-radius: 50%;
 }
+
+.message.grouped {
+    margin-top: -4px;
+}
+
+.message.grouped .message-avatar {
+    visibility: hidden;
+}
+
+.message.search-match {
+    background: rgba(59, 130, 246, 0.1);
+    border-radius: 8px;
+}
+
+.search-highlight {
+    background: rgba(255, 255, 0, 0.4);
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+
+.pinned-mark, .bookmarked-mark {
+    font-size: 12px;
+    margin-left: 4px;
+}
+
+.message.pinned {
+    background: rgba(59, 130, 246, 0.05);
+    border-left: 3px solid var(--accent);
+    padding-left: 8px;
+}
+
+.message.bookmarked {
+    border-left: 3px solid #f59e0b;
+    padding-left: 8px;
+}
+
+.scroll-to-bottom-btn {
+    position: absolute;
+    bottom: 100px;
+    right: 20px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.2s ease;
+    z-index: 10;
+}
+
+.scroll-to-bottom-btn.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.scroll-to-bottom-btn:hover {
+    background: var(--surface-hover);
+    transform: translateY(-2px);
+}
+
+.scroll-to-bottom-btn svg {
+    width: 20px;
+    height: 20px;
+    color: var(--text-secondary);
+}
+
+.chat-search-panel {
+    display: none;
+    padding: 8px 16px;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    align-items: center;
+    gap: 8px;
+}
+
+.chat-search-panel.active {
+    display: flex;
+}
+
+.chat-search-input {
+    flex: 1;
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 8px 16px;
+    color: var(--text-primary);
+    font-size: 14px;
+    outline: none;
+}
+
+.chat-search-input:focus {
+    border-color: var(--accent);
+}
+
+.chat-search-count {
+    font-size: 12px;
+    color: var(--text-secondary);
+    min-width: 40px;
+    text-align: center;
+}
+
+.chat-search-close {
+    width: 32px;
+    height: 32px;
+}

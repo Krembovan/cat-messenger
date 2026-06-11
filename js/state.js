@@ -6,9 +6,18 @@ export const State = {
     selectedMessages: new Set(),
     selectMode: false,
     emojiPickerOpen: false,
+    stickerPickerOpen: false,
     isRecording: false,
     recordingStartedAt: null,
     recordingInterval: null,
+    showArchived: false,
+    searchQuery: '',
+    searchResults: [],
+    chatSearchOpen: false,
+    chatSearchQuery: '',
+    theme: 'dark',
+    accentColor: '#3b82f6',
+    fontSize: 'medium',
     
     listeners: [],
     
@@ -105,5 +114,68 @@ export const State = {
     getRecordingDuration() {
         if (!this.recordingStartedAt) return 0;
         return Math.floor((Date.now() - this.recordingStartedAt) / 1000);
+    },
+    
+    toggleArchivedView() {
+        this.showArchived = !this.showArchived;
+        this.notify('archivedViewToggled', this.showArchived);
+    },
+    
+    setGlobalSearch(query) {
+        this.searchQuery = query;
+        this.notify('globalSearchChanged', query);
+    },
+    
+    setChatSearch(query) {
+        this.chatSearchQuery = query;
+        this.notify('chatSearchChanged', query);
+    },
+    
+    toggleChatSearch() {
+        this.chatSearchOpen = !this.chatSearchOpen;
+        if (!this.chatSearchOpen) this.chatSearchQuery = '';
+        this.notify('chatSearchToggled', this.chatSearchOpen);
+    },
+    
+    toggleStickerPicker() {
+        this.stickerPickerOpen = !this.stickerPickerOpen;
+        this.notify('stickerToggle', this.stickerPickerOpen);
+    },
+    
+    closeStickerPicker() {
+        if (!this.stickerPickerOpen) return;
+        this.stickerPickerOpen = false;
+        this.notify('stickerClosed');
+    },
+    
+    setTheme(theme) {
+        this.theme = theme;
+        localStorage.setItem('cat_theme', theme);
+        this.notify('themeChanged', theme);
+    },
+    
+    setAccentColor(color) {
+        this.accentColor = color;
+        localStorage.setItem('cat_accent', color);
+        document.documentElement.style.setProperty('--accent', color);
+        this.notify('accentChanged', color);
+    },
+    
+    setFontSize(size) {
+        this.fontSize = size;
+        localStorage.setItem('cat_fontsize', size);
+        this.notify('fontSizeChanged', size);
+    },
+    
+    loadPreferences() {
+        const theme = localStorage.getItem('cat_theme');
+        const accent = localStorage.getItem('cat_accent');
+        const fontsize = localStorage.getItem('cat_fontsize');
+        if (theme) this.theme = theme;
+        if (accent) {
+            this.accentColor = accent;
+            document.documentElement.style.setProperty('--accent', accent);
+        }
+        if (fontsize) this.fontSize = fontsize;
     }
 };

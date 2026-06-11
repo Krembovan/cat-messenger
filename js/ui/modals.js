@@ -19,6 +19,8 @@ export const Modals = {
         const moreBtn = document.getElementById('chatMoreBtn');
         const pinBtn = document.getElementById('settingsPinBtn');
         const muteBtn = document.getElementById('settingsMuteBtn');
+        const archiveBtn = document.getElementById('settingsArchiveBtn');
+        const wallpaperBtn = document.getElementById('settingsWallpaperBtn');
         const clearBtn = document.getElementById('settingsClearBtn');
         const deleteBtn = document.getElementById('settingsDeleteBtn');
         
@@ -38,6 +40,18 @@ export const Modals = {
             overlay.classList.remove('active');
         });
         
+        archiveBtn.addEventListener('click', () => {
+            API.toggleArchive(State.currentChat);
+            overlay.classList.remove('active');
+            const chat = API.getChat(State.currentChat);
+            Helpers.showToast(chat.archived ? 'Чат архивирован' : 'Чат разархивирован');
+        });
+        
+        wallpaperBtn.addEventListener('click', () => {
+            overlay.classList.remove('active');
+            this.showWallpaperPicker();
+        });
+        
         clearBtn.addEventListener('click', () => {
             if (confirm('Очистить историю чата?')) {
                 API.clearHistory(State.currentChat);
@@ -52,6 +66,54 @@ export const Modals = {
                 overlay.classList.remove('active');
                 State.setCurrentChat(Object.keys(State.chats)[0] || null);
             }
+        });
+    },
+    
+    showWallpaperPicker() {
+        const wallpapers = [
+            null,
+            'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+            'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+            'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+            'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
+            'linear-gradient(135deg, #30cfd0 0%, #330867 100%)',
+            'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)'
+        ];
+        
+        const html = `
+            <div class="wallpaper-picker">
+                <h3>Выберите обои</h3>
+                <div class="wallpaper-grid">
+                    ${wallpapers.map((wp, i) => `
+                        <div class="wallpaper-option ${i === 0 ? 'default' : ''}" 
+                             data-wallpaper="${wp || ''}"
+                             style="${wp ? `background: ${wp}` : ''}">
+                            ${i === 0 ? '<span>По умолчанию</span>' : ''}
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+        
+        const modal = document.createElement('div');
+        modal.className = 'overlay active';
+        modal.innerHTML = `<div class="modal">${html}</div>`;
+        document.body.appendChild(modal);
+        
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.remove();
+            }
+        });
+        
+        modal.querySelectorAll('.wallpaper-option').forEach(opt => {
+            opt.addEventListener('click', () => {
+                const wp = opt.dataset.wallpaper || null;
+                API.setWallpaper(State.currentChat, wp);
+                modal.remove();
+                Helpers.showToast('Обои обновлены');
+            });
         });
     },
     

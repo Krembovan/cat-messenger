@@ -89,6 +89,16 @@ export const ContextMenu = {
             case 'edit':
                 State.setEditMessage(this.currentMsgId);
                 break;
+            case 'pin':
+                API.togglePinMessage(State.currentChat, this.currentMsgId);
+                const msg = chat.messages[msgIndex];
+                this.showNotification(msg.pinned ? 'Сообщение закреплено' : 'Сообщение откреплено');
+                break;
+            case 'bookmark':
+                API.toggleBookmark(State.currentChat, this.currentMsgId);
+                const bookmarkedMsg = chat.messages[msgIndex];
+                this.showNotification(bookmarkedMsg.bookmarked ? 'Добавлено в закладки' : 'Удалено из закладок');
+                break;
             case 'forward':
                 this.doForward();
                 break;

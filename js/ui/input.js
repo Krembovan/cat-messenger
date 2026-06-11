@@ -306,5 +306,15 @@ export const Input = {
         this.elements.input.focus();
         this.autoResize();
         this.toggleMode();
+    },
+    
+    insertGif(url) {
+        if (!State.currentChat) return;
+        API.addMessage(State.currentChat, {
+            text: '',
+            incoming: false,
+            type: 'image',
+            file: { name: 'GIF', url: url, type: 'image/gif' }
+        });
     }
 };

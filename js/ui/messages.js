@@ -94,7 +94,13 @@ export const Messages = {
         
         this.elements.container.addEventListener('scroll', () => {
             this.saveScrollPosition();
+            this.updateScrollButton();
         });
+        
+        const scrollBtn = document.getElementById('scrollToBottomBtn');
+        if (scrollBtn) {
+            scrollBtn.addEventListener('click', () => this.scrollToBottomSmooth());
+        }
     },
     
     bindStateEvents() {
@@ -102,26 +108,79 @@ export const Messages = {
             if (event === 'chatChanged') {
                 this.shouldScrollToBottom = false;
                 this.render();
+                this.applyWallpaper();
             } else if (event === 'messageAdded') {
                 this.shouldScrollToBottom = true;
                 this.render();
             } else if (event === 'messageEdited' || 
                 event === 'messageDeleted' || event === 'messagesDeleted' || 
-                event === 'reactionChanged') {
+                event === 'reactionChanged' || event === 'messagePinned' ||
+                event === 'messageBookmarked') {
                 this.render();
             } else if (event === 'selectModeChanged') {
                 this.toggleSelectMode(data.active);
             } else if (event === 'selectionChanged') {
                 this.updateSelectionUI(data);
+            } else if (event === 'chatSearchChanged') {
+                if (data) {
+                    this.highlightSearchResults(data);
+                } else {
+                    this.clearSearchHighlights();
+                }
+            } else if (event === 'wallpaperChanged') {
+                this.applyWallpaper();
             }
         });
+    },
+    
+    applyWallpaper() {
+        const chat = State.getCurrentChat();
+        if (!chat) return;
+        
+        const container = this.elements.container;
+        if (chat.wallpaper) {
+            container.style.background = chat.wallpaper;
+        } else {
+            container.style.background = '';
+        }
     },
     
     render() {
         const chat = State.getCurrentChat();
         if (!chat) return;
         
-        this.elements.container.innerHTML = chat.messages.map(msg => this.renderMessage(msg, chat)).join('');
+        let html = '';
+        let lastDate = null;
+        let lastSender = null;
+        let lastIncoming = null;
+        
+        chat.messages.forEach((msg, index) => {
+            const msgDate = new Date(msg.timestamp || Date.now());
+            const dateStr = this.formatDateSeparator(msgDate);
+            
+            if (dateStr !== lastDate) {
+                html += `<div class="message date-divider"><span>${dateStr}</span></div>`;
+                lastDate = dateStr;
+                lastSender = null;
+                lastIncoming = null;
+            }
+            
+            const isGrouped = msg.incoming === lastIncoming && 
+                             msg.sender === lastSender &&
+                             index > 0 &&
+                             (msg.timestamp - chat.messages[index - 1].timestamp) < 300000;
+            
+            html += this.renderMessage(msg, chat, isGrouped);
+            
+            lastSender = msg.sender;
+            lastIncoming = msg.incoming;
+        });
+        
+        this.elements.container.innerHTML = html;
+        
+        if (State.chatSearchQuery) {
+            this.highlightSearchResults(State.chatSearchQuery);
+        }
         
         if (this.shouldScrollToBottom) {
             this.scrollToBottom();
@@ -129,25 +188,47 @@ export const Messages = {
             this.restoreScrollPosition();
             this.shouldScrollToBottom = true;
         }
+        
+        this.updateScrollButton();
     },
     
-    renderMessage(msg, chat) {
+    formatDateSeparator(date) {
+        const today = new Date();
+        const yesterday = new Date(today);
+        yesterday.setDate(yesterday.getDate() - 1);
+        
+        if (date.toDateString() === today.toDateString()) {
+            return 'Сегодня';
+        } else if (date.toDateString() === yesterday.toDateString()) {
+            return 'Вчера';
+        } else {
+            return date.toLocaleDateString('ru-RU', { 
+                day: 'numeric', 
+                month: 'long',
+                year: date.getFullYear() !== today.getFullYear() ? 'numeric' : undefined
+            });
+        }
+    },
+    
+    renderMessage(msg, chat, isGrouped = false) {
         const outgoing = !msg.incoming;
         const isVoice = msg.type === 'voice';
         const isImage = msg.type === 'image';
         const isFile = msg.type === 'file';
         const hasReactions = msg.reactions && Object.keys(msg.reactions).length > 0;
         
-        const avatarHtml = !outgoing
+        const avatarHtml = (!outgoing && !isGrouped)
             ? `${Helpers.avatarHtml(chat.name, 30, 'message-avatar')}`
-            : '';
-        const senderHtml = msg.sender
+            : (!outgoing ? '<div style="width:30px;flex-shrink:0"></div>' : '');
+        const senderHtml = (msg.sender && !isGrouped)
             ? `<span class="message-sender">${Helpers.escapeHtml(msg.sender)}</span>`
             : '';
         const statusHtml = outgoing ? this.getStatusIcon(msg.status) : '';
         const replyHtml = msg.replyTo ? this.renderReply(msg.replyTo, chat) : '';
         const editedHtml = msg.edited ? ' <span class="edited-mark">изм.</span>' : '';
         const forwardedHtml = msg.forwarded ? ' <span class="forwarded-mark">↗ Переслано</span>' : '';
+        const pinnedHtml = msg.pinned ? ' <span class="pinned-mark">📌</span>' : '';
+        const bookmarkedHtml = msg.bookmarked ? ' <span class="bookmarked-mark">🔖</span>' : '';
         
         const metaHtml = `<div class="message-meta">
             <span class="message-time">${msg.time}</span>
@@ -161,7 +242,7 @@ export const Messages = {
             bubbleHtml = `<div class="message-bubble">
                 <img src="${msg.file.url}" alt="Photo" class="message-image">
                 ${metaHtml}
-                ${msg.text ? `<p>${Helpers.escapeHtml(msg.text)}</p>` : ''}
+                ${msg.text ? `<p>${API.formatText(msg.text)}</p>` : ''}
             </div>`;
         } else if (isFile && msg.file) {
             bubbleHtml = `<div class="message-bubble">
@@ -176,8 +257,9 @@ export const Messages = {
                 ${metaHtml}
             </div>`;
         } else {
+            const formattedText = API.formatText(msg.text);
             bubbleHtml = `<div class="message-bubble">
-                <p>${Helpers.escapeHtml(msg.text)}${editedHtml}${forwardedHtml}</p>
+                <p>${formattedText}${editedHtml}${forwardedHtml}${pinnedHtml}${bookmarkedHtml}</p>
                 ${metaHtml}
             </div>`;
         }
@@ -186,7 +268,7 @@ export const Messages = {
         const selectorHtml = `<div class="message-selector"></div>`;
         
         return `
-            <div class="message ${outgoing ? 'outgoing' : 'incoming'}${isVoice ? ' voice-message' : ''}${isImage ? ' image-message' : ''}${isFile ? ' file-message' : ''}${msg.edited ? ' edited' : ''}" data-id="${msg.id}">
+            <div class="message ${outgoing ? 'outgoing' : 'incoming'}${isGrouped ? ' grouped' : ''}${isVoice ? ' voice-message' : ''}${isImage ? ' image-message' : ''}${isFile ? ' file-message' : ''}${msg.edited ? ' edited' : ''}${msg.pinned ? ' pinned' : ''}${msg.bookmarked ? ' bookmarked' : ''}" data-id="${msg.id}">
                 ${avatarHtml}
                 ${selectorHtml}
                 <div class="message-content">
@@ -344,5 +426,52 @@ export const Messages = {
         } else {
             this.scrollToBottom();
         }
+    },
+    
+    updateScrollButton() {
+        const container = this.elements.container;
+        const scrollBtn = document.getElementById('scrollToBottomBtn');
+        if (!scrollBtn) return;
+        
+        const isNearBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 200;
+        scrollBtn.classList.toggle('visible', !isNearBottom);
+    },
+    
+    scrollToBottomSmooth() {
+        this.elements.container.scrollTo({
+            top: this.elements.container.scrollHeight,
+            behavior: 'smooth'
+        });
+    },
+    
+    highlightSearchResults(query) {
+        if (!query) return;
+        const lower = query.toLowerCase();
+        const messages = this.elements.container.querySelectorAll('.message');
+        
+        messages.forEach(msgEl => {
+            const bubble = msgEl.querySelector('.message-bubble p');
+            if (!bubble) return;
+            
+            const text = bubble.textContent;
+            if (text.toLowerCase().includes(lower)) {
+                msgEl.classList.add('search-match');
+                const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+                bubble.innerHTML = bubble.innerHTML.replace(regex, '<mark class="search-highlight">$1</mark>');
+            } else {
+                msgEl.classList.remove('search-match');
+            }
+        });
+    },
+    
+    clearSearchHighlights() {
+        const messages = this.elements.container.querySelectorAll('.message.search-match');
+        messages.forEach(msgEl => {
+            msgEl.classList.remove('search-match');
+            const highlights = msgEl.querySelectorAll('.search-highlight');
+            highlights.forEach(h => {
+                h.replaceWith(h.textContent);
+            });
+        });
     }
 };

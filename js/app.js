@@ -5,6 +5,7 @@ import { Chat } from './ui/chat.js';
 import { Messages } from './ui/messages.js';
 import { Input } from './ui/input.js';
 import { Emoji } from './ui/emoji.js';
+import { Stickers } from './ui/stickers.js';
 import { ContextMenu } from './ui/context-menu.js';
 import { Swipe } from './ui/swipe.js';
 import { Profile } from './ui/profile.js';
@@ -14,14 +15,16 @@ const App = {
     init() {
         console.log('[CAT] Initializing...');
         
+        State.loadPreferences();
         API.load();
         
-        const modules = [Sidebar, Chat, Messages, Input, Emoji, ContextMenu, Swipe, Profile, Modals];
+        const modules = [Sidebar, Chat, Messages, Input, Emoji, Stickers, ContextMenu, Swipe, Profile, Modals];
         modules.forEach(m => {
             try { m.init(); } catch (e) { console.error('[CAT] Failed to init module:', e); }
         });
         
         this.bindGlobalEvents();
+        this.registerServiceWorker();
         
         const chats = Object.keys(State.chats);
         if (chats.length > 0) {
@@ -29,6 +32,14 @@ const App = {
         }
         
         console.log(`[CAT] Ready! ${chats.length} chats loaded.`);
+    },
+    
+    registerServiceWorker() {
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js')
+                .then(reg => console.log('[CAT] Service Worker registered'))
+                .catch(err => console.error('[CAT] Service Worker failed:', err));
+        }
     },
     
     bindGlobalEvents() {
@@ -40,6 +51,8 @@ const App = {
             if (e.key === 'Escape') {
                 if (State.emojiPickerOpen) {
                     State.closeEmojiPicker();
+                } else if (State.stickerPickerOpen) {
+                    State.closeStickerPicker();
                 } else if (State.selectMode) {
                     State.clearSelection();
                 } else if (State.currentChat && window.innerWidth <= 767) {
@@ -51,6 +64,15 @@ const App = {
                 document.getElementById('forwardOverlay').classList.remove('active');
             }
         });
+        
+        const stickerBtn = document.getElementById('stickerBtn');
+        if (stickerBtn) {
+            stickerBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (State.emojiPickerOpen) State.closeEmojiPicker();
+                State.toggleStickerPicker();
+            });
+        }
     }
 };
 

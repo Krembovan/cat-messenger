@@ -33,7 +33,29 @@ export const Chat = {
             if (State.currentChat) Profile.show(State.currentChat);
         });
         this.elements.chatSearchBtn.addEventListener('click', () => {
-            alert('Поиск в чате в разработке');
+            State.toggleChatSearch();
+            const panel = document.getElementById('chatSearchPanel');
+            const input = document.getElementById('chatSearchInput');
+            if (State.chatSearchOpen) {
+                panel.classList.add('active');
+                input.focus();
+            } else {
+                panel.classList.remove('active');
+                State.setChatSearch('');
+            }
+        });
+        
+        const chatSearchInput = document.getElementById('chatSearchInput');
+        const chatSearchClose = document.getElementById('chatSearchClose');
+        
+        chatSearchInput.addEventListener('input', Helpers.debounce((e) => {
+            State.setChatSearch(e.target.value);
+        }, 300));
+        
+        chatSearchClose.addEventListener('click', () => {
+            State.chatSearchOpen = false;
+            State.setChatSearch('');
+            document.getElementById('chatSearchPanel').classList.remove('active');
         });
     },
     

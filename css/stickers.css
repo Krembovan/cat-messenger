@@ -1,0 +1,111 @@
+.sticker-picker {
+    display: none;
+    position: absolute;
+    bottom: 70px;
+    right: 12px;
+    width: 320px;
+    max-height: 400px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    z-index: 100;
+    animation: slideUp 0.2s ease;
+}
+
+.sticker-picker.active {
+    display: flex;
+    flex-direction: column;
+}
+
+.sticker-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-primary);
+}
+
+.sticker-tab {
+    flex: 1;
+    padding: 12px;
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.sticker-tab:hover {
+    color: var(--text-primary);
+    background: var(--surface-hover);
+}
+
+.sticker-tab.active {
+    color: var(--accent);
+    border-bottom: 2px solid var(--accent);
+}
+
+.sticker-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px;
+}
+
+.sticker-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 8px;
+}
+
+.sticker-item {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.sticker-item:hover {
+    background: var(--surface-hover);
+    transform: scale(1.1);
+}
+
+.gif-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+}
+
+.gif-item {
+    aspect-ratio: 1;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.gif-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.gif-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.sticker-btn {
+    width: 40px;
+    height: 40px;
+    color: var(--text-secondary);
+}
+
+.sticker-btn:hover {
+    color: var(--accent);
+}
