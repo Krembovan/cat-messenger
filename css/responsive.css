@@ -4,53 +4,28 @@
         position: relative;
         transform: none !important;
         pointer-events: auto;
-        border-right: 1px solid var(--glass-border);
     }
 
-    .sidebar-header {
-        padding: 20px 20px 16px;
-        border-bottom: 1px solid var(--glass-border);
-    }
-
-    .chat-main {
-        position: relative;
-        transform: none !important;
-    }
-
+    .sidebar-header { padding: 20px 20px 16px; }
+    .chat-main { position: relative; transform: none !important; }
     .back-btn { display: none; }
 
     .emoji-picker {
-        width: 320px;
-        left: auto;
-        right: 60px;
-        border-radius: 14px;
-        bottom: 64px;
-        border: 1px solid var(--glass-border);
+        width: 320px; left: auto; right: 12px;
+        border-radius: 14px; bottom: 74px;
+        margin: 0;
     }
 
-    .message {
-        max-width: 55%;
-    }
+    .message { max-width: 60%; }
 
-    .profile-overlay, .overlay {
-        align-items: center;
-    }
-
+    .profile-overlay, .overlay { align-items: center; }
     .profile-panel, .modal, .panel {
-        border-radius: 18px;
-        max-height: 65vh;
+        border-radius: 18px; max-height: 65vh;
         max-width: 400px;
-        border: 1px solid var(--glass-border);
-        animation: menuScaleIn 0.15s ease;
+        animation: menuScaleIn 0.15s var(--ease);
     }
 
     .message-image { max-width: 300px; }
-
-    .search-box {
-        padding: 0 20px 16px;
-    }
-
-    .chats-list {
-        padding: 0 12px;
-    }
+    .search-box { padding: 0 20px 0; }
+    .chats-list { padding: 0 12px; }
 }

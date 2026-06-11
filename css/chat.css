@@ -3,126 +3,87 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    background: var(--bg-primary);
+    background: transparent;
     position: absolute;
     top: 0;
     left: 0;
     z-index: 20;
     transform: translateX(100%);
-    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.3s var(--ease);
     overflow: visible;
 }
-
-.chat-main.active {
-    transform: translateX(0);
-}
+.chat-main.active { transform: translateX(0); }
 
 .chat-header-main {
-    padding: calc(10px + var(--safe-top)) 10px 10px;
+    padding: calc(14px + var(--safe-top)) 20px 14px;
     display: flex;
     align-items: center;
-    gap: 4px;
-    border-bottom: 1px solid var(--glass-border);
-    background: var(--glass-bg);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    min-height: 56px;
+    gap: 14px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(8,6,22,0.6);
+    backdrop-filter: var(--backdrop);
+    -webkit-backdrop-filter: var(--backdrop);
+    min-height: 72px;
     position: relative;
     z-index: 5;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
 
 .chat-header-main::after {
     content: '';
     position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(59,130,246,0.15), transparent);
+    bottom: -1px; left: 20%; right: 20%; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--primary-glow), transparent);
+    opacity: 0.4;
 }
 
-.back-btn {
-    margin-right: 2px;
-}
+.back-btn { margin-right: 2px; }
 
 .chat-user-info {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     flex: 1;
     min-width: 0;
     cursor: pointer;
-    padding: 4px 6px;
-    border-radius: var(--radius-sm);
-    transition: background 0.12s ease;
+    padding: 4px 8px;
+    border-radius: 12px;
+    transition: background 0.15s;
 }
-
-.chat-user-info:hover {
-    background: var(--bg-hover);
-}
+.chat-user-info:hover { background: var(--surface-2); }
 
 .chat-avatar-main {
-    width: 38px;
-    height: 38px;
+    width: 46px;
+    height: 46px;
     border-radius: 50%;
     flex-shrink: 0;
 }
 
-.chat-user-details {
-    min-width: 0;
-}
-
-.chat-user-name {
-    font-size: 15px;
-    font-weight: 600;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.chat-user-status {
-    font-size: 12px;
-    color: var(--text-muted);
-}
-
-.chat-actions {
-    display: flex;
-    gap: 2px;
-}
+.chat-user-details { min-width: 0; }
+.chat-user-name { font-size: 16px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.chat-user-status { font-size: 12px; color: var(--text-secondary); }
+.chat-actions { display: flex; gap: 6px; }
 
 .reply-preview {
     display: none;
     align-items: center;
     padding: 8px 14px;
-    background: var(--glass-bg);
+    background: rgba(8,6,22,0.6);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--glass-border);
+    border-bottom: 1px solid var(--border);
     gap: 10px;
     position: relative;
 }
-
 .reply-preview::before {
     content: '';
     position: absolute;
-    left: 0;
-    top: 4px;
-    bottom: 4px;
-    width: 3px;
-    background: var(--accent-gradient);
-    border-radius: 2px;
+    left: 0; top: 4px; bottom: 4px; width: 3px;
+    background: linear-gradient(180deg, var(--primary), var(--accent));
+    border-radius: 0 2px 2px 0;
 }
+.reply-preview.active { display: flex; }
 
-.reply-preview.active {
-    display: flex;
-}
-
-.reply-content {
-    flex: 1;
-    min-width: 0;
-}
-
+.reply-content { flex: 1; min-width: 0; }
 .reply-label {
     font-size: 10px;
     color: var(--accent);
@@ -130,7 +91,6 @@
     letter-spacing: 0.5px;
     font-weight: 600;
 }
-
 .reply-text {
     font-size: 12px;
     color: var(--text-secondary);
@@ -139,7 +99,6 @@
     text-overflow: ellipsis;
     margin-top: 1px;
 }
-
 .reply-cancel {
     background: transparent;
     border: none;
@@ -150,13 +109,6 @@
     display: flex;
     transition: all 0.12s ease;
 }
-
-.reply-cancel:hover {
-    background: var(--bg-hover);
-    color: var(--text-secondary);
-}
-
-.reply-cancel svg {
-    width: 16px;
-    height: 16px;
-}
+.reply-cancel:hover { background: var(--surface-hover); color: var(--text-secondary); }
+.reply-cancel svg { width: 16px; height: 16px; }
+.edit-label { color: var(--warning) !important; }
