@@ -1,6 +1,8 @@
 import { State } from '../state.js';
 import { API } from '../api.js';
 import { Helpers } from '../utils/helpers.js';
+import { Profile } from './profile.js';
+import { Utilities } from './utilities.js';
 
 export const Sidebar = {
     elements: {},
@@ -32,12 +34,38 @@ export const Sidebar = {
             Helpers.debounce((e) => this.handleSearch(e.target.value), 300)
         );
         
-        document.getElementById('hamburgerBtn')?.addEventListener('click', () => {
-            if (State.currentChat) {
-                document.getElementById('chatMain').classList.add('active');
-                document.getElementById('sidebar').classList.add('hidden');
-            }
-        });
+        const hamburger = document.getElementById('hamburgerBtn');
+        const dropdown = document.getElementById('hamburgerDropdown');
+        const closeBtn = document.getElementById('hamburgerCloseBtn');
+        
+        if (hamburger && dropdown) {
+            hamburger.addEventListener('click', (e) => {
+                e.stopPropagation();
+                dropdown.classList.toggle('show');
+            });
+            
+            document.addEventListener('click', (e) => {
+                if (dropdown.classList.contains('show') && !dropdown.contains(e.target) && e.target !== hamburger) {
+                    dropdown.classList.remove('show');
+                }
+            });
+            
+            closeBtn?.addEventListener('click', () => dropdown.classList.remove('show'));
+            
+            dropdown.querySelectorAll('.dropdown-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const action = item.dataset.action;
+                    dropdown.classList.remove('show');
+                    if (action === 'settings') {
+                        Utilities.showSettings();
+                    } else if (action === 'profile') {
+                        if (State.currentChat) {
+                            Profile.show(State.currentChat);
+                        }
+                    }
+                });
+            });
+        }
         
         this.initResize();
         
